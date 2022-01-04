@@ -16,6 +16,11 @@ import androidx.core.app.NotificationManagerCompat
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        lateinit var audioManager: AudioManager
+        lateinit var notificationManager: NotificationManager
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,13 +28,8 @@ class MainActivity : AppCompatActivity() {
         requestWriteSettingsPermission()
         requestNotificationPermission()
 
-        findViewById<Button>(R.id.btnTest).setOnClickListener {
-            val audioManager: AudioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-            val ringerMode = audioManager.ringerMode
-            audioManager.ringerMode = (ringerMode + 1) % 3
-
-            Log.d(TAG, "onCreate: Change RingerMode $ringerMode to ${(ringerMode + 1) % 3}")
-        }
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
     private fun requestWriteSettingsPermission() {
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun isNotificationPermissionGranted(): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             return notificationManager.isNotificationListenerAccessGranted(ComponentName(application, MessageListenerService::class.java))
         }
         else {

@@ -1,8 +1,5 @@
 package com.devjaewoo.itsmywaye
 
-import android.app.Service
-import android.content.Intent
-import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log

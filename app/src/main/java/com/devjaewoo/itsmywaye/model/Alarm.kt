@@ -20,10 +20,11 @@ class Alarm(
     companion object {
         const val SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ${TableInfo.TABLE_NAME} (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "${TableInfo.COLUMN_NAME_FILE_PATH} VARCHAR(50) NOT NULL" +
-                "${TableInfo.COLUMN_NAME_VOLUME} INTEGER NOT NULL" +
-                "${TableInfo.COLUMN_NAME_REPEAT_TIMES} INTEGER NOT NULL" +
-                "${TableInfo.COLUMN_NAME_INTERVAL} INTEGER NOT NULL)" +
+                "${TableInfo.COLUMN_NAME_FILE_PATH} VARCHAR(50) NOT NULL," +
+                "${TableInfo.COLUMN_NAME_VOLUME} INTEGER NOT NULL," +
+                "${TableInfo.COLUMN_NAME_REPEAT_TIMES} INTEGER NOT NULL," +
+                "${TableInfo.COLUMN_NAME_INTERVAL} INTEGER NOT NULL," +
+                "${TableInfo.COLUMN_NAME_FK_ALARM_ITEM} INTEGER NOT NULL," +
                 "FOREIGN KEY(${TableInfo.COLUMN_NAME_FK_ALARM_ITEM}) " +
                 "REFERENCES ${Item.TableInfo.TABLE_NAME}(${BaseColumns._ID}) " +
                 "ON DELETE CASCADE)"

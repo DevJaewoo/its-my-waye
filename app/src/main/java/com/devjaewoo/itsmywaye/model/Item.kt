@@ -2,9 +2,7 @@ package com.devjaewoo.itsmywaye.model
 
 import android.provider.BaseColumns
 
-class Item(
-    var name: String,
-    var enabled: Boolean) {
+class Item(var name: String, var enabled: Boolean) {
 
     object TableInfo : BaseColumns {
         const val TABLE_NAME = "Item"

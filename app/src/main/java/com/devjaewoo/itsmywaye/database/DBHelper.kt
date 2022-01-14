@@ -20,6 +20,9 @@ class DBHelper(context: Context)
     override fun onCreate(db: SQLiteDatabase?) {
         Log.i(TAG, "onCreate: ")
 
+        db?.execSQL(Item.SQL_DROP_TABLE)
+        db?.execSQL(Alarm.SQL_DROP_TABLE)
+
         db?.execSQL(Item.SQL_CREATE_TABLE)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
     }
@@ -33,7 +36,7 @@ class DBHelper(context: Context)
     }
 
 
-    fun insert(table: String, values: ContentValues) {
+    fun insert(table: String, values: ContentValues): Int {
         val db = writableDatabase
         val result = db.insert(table, null, values)
 
@@ -42,6 +45,8 @@ class DBHelper(context: Context)
         if(result == -1L) {
             throw IOException("Insert to table $table failed.")
         }
+
+        return result.toInt()
     }
 
 

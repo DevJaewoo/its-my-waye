@@ -20,15 +20,15 @@ class DBHelper(context: Context)
     override fun onCreate(db: SQLiteDatabase?) {
         Log.i(TAG, "onCreate: ")
 
-        db?.execSQL(Item.SQL_DROP_TABLE)
-        db?.execSQL(Alarm.SQL_DROP_TABLE)
-
         db?.execSQL(Item.SQL_CREATE_TABLE)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         Log.i(TAG, "onUpgrade: ")
+
+        db?.execSQL(Item.SQL_DROP_TABLE)
+        db?.execSQL(Alarm.SQL_DROP_TABLE)
 
         db?.execSQL(Item.SQL_DROP_TABLE)
         db?.execSQL(Alarm.SQL_DROP_TABLE)

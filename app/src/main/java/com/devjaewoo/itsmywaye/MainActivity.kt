@@ -10,11 +10,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.devjaewoo.itsmywaye.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var binding: ActivityMainBinding
 
     companion object {
         lateinit var audioManager: AudioManager
@@ -23,13 +31,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         requestWriteSettingsPermission()
         requestNotificationPermission()
 
-        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        binding.contentMain.toolbar.ibToolbar.setOnClickListener {
+            toggleDrawerLayout(binding.root)
+        }
+
+        binding.navView.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG, "onNavigationItemSelected: ${item.title}")
+        return true
+    }
+
+    private fun toggleDrawerLayout(drawerLayout: DrawerLayout) {
+
+        if(!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+        else {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
     }
 
     private fun requestWriteSettingsPermission() {
@@ -48,7 +79,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun isNotificationPermissionGranted(): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             return notificationManager.isNotificationListenerAccessGranted(ComponentName(application, MessageListenerService::class.java))
         }
         else {

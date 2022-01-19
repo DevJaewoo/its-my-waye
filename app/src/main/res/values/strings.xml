@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">It\'s My Waye</string>
+    <string name="menu_alarm">Alarm</string>
+    <string name="menu_notification">Notification</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_button">menu</string>
 </resources>

@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.devjaewoo.itsmywaye.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityMainBinding
 
     companion object {
+        private const val DRAWER_GRAVITY = GravityCompat.START
+
         lateinit var audioManager: AudioManager
         lateinit var notificationManager: NotificationManager
     }
@@ -46,20 +49,47 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         binding.navView.setNavigationItemSelectedListener(this)
+        setFragment(AlarmFragment())
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d(TAG, "onNavigationItemSelected: ${item.title}")
+        when(item.itemId) {
+            R.id.menu_alarm -> {
+                Log.d(TAG, "onNavigationItemSelected: Set fragment to Alarm")
+                setFragment(AlarmFragment.newInstance())
+            }
+
+            R.id.menu_notification -> {
+                Log.d(TAG, "onNavigationItemSelected: Set fragment to Notification")
+                setFragment(NotificationFragment())
+            }
+
+            R.id.menu_settings -> {
+                Log.d(TAG, "onNavigationItemSelected: Set fragment to Settings")
+                setFragment(SettingsFragment())
+            }
+
+            else -> {
+                Log.d(TAG, "onNavigationItemSelected: WTF")
+            }
+        }
+
+        binding.root.closeDrawer(DRAWER_GRAVITY)
         return true
+    }
+
+    private fun setFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container_view, fragment).commit()
     }
 
     private fun toggleDrawerLayout(drawerLayout: DrawerLayout) {
 
-        if(!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.openDrawer(GravityCompat.START)
+        if(!drawerLayout.isDrawerOpen(DRAWER_GRAVITY)) {
+            drawerLayout.openDrawer(DRAWER_GRAVITY)
         }
         else {
-            drawerLayout.closeDrawer(GravityCompat.START)
+            drawerLayout.closeDrawer(DRAWER_GRAVITY)
         }
     }
 

@@ -30,8 +30,8 @@ class DBHelper(context: Context)
         db?.execSQL(Item.SQL_DROP_TABLE)
         db?.execSQL(Alarm.SQL_DROP_TABLE)
 
-        db?.execSQL(Item.SQL_DROP_TABLE)
-        db?.execSQL(Alarm.SQL_DROP_TABLE)
+        db?.execSQL(Item.SQL_CREATE_TABLE)
+        db?.execSQL(Alarm.SQL_CREATE_TABLE)
         onCreate(db)
     }
 

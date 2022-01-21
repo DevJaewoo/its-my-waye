@@ -3,6 +3,8 @@ package com.devjaewoo.itsmywaye.dao
 import android.content.ContentValues
 import android.content.Context
 import android.provider.BaseColumns
+import android.util.Log
+import com.devjaewoo.itsmywaye.TAG
 import com.devjaewoo.itsmywaye.database.DBHelper
 import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
@@ -32,7 +34,7 @@ class ItemDAO(val context: Context) {
             val isEnabled = cursor.getInt(2) == 1
             var alarm: Alarm? = null
 
-            if(!cursor.getString(3).equals("null")) {
+            if(!cursor.getString(3).equals("NULL")) {
                 alarm = alarmDAO.select("${BaseColumns._ID} = ${cursor.getInt(3)}")
             }
 
@@ -53,7 +55,7 @@ class ItemDAO(val context: Context) {
             val isEnabled = cursor.getInt(2) == 1
             var alarm: Alarm? = null
 
-            if(!cursor.getString(3).equals("null")) {
+            if(!cursor.getString(3).equals("NULL")) {
                 alarm = alarmDAO.select("${BaseColumns._ID} = ${cursor.getInt(3)}")
             }
 

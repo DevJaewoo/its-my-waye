@@ -3,11 +3,14 @@ package com.devjaewoo.itsmywaye
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
 import com.devjaewoo.itsmywaye.database.DBHelper
 import com.devjaewoo.itsmywaye.databinding.FragmentAlarmBinding
 import com.devjaewoo.itsmywaye.model.Item
@@ -23,20 +26,40 @@ class AlarmFragment : Fragment() {
     lateinit var alarmRecyclerAdapter: AlarmRecyclerAdapter
     lateinit var alarmList: List<Item>
 
-    var isAllEnabled: Boolean = false
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
-
-        //context.getSharedPreferences("")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = binding.root
+        Log.d(TAG, "onCreateView: ")
+        
+        _binding = FragmentAlarmBinding.inflate(inflater, container, false)
+
         alarmRecyclerView = binding.recyclerviewAlarm
         alarmRecyclerAdapter = AlarmRecyclerAdapter()
-        return inflater.inflate(R.layout.fragment_alarm, container, false)
+
+        alarmRecyclerView.adapter = alarmRecyclerAdapter
+        alarmRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+        alarmRecyclerAdapter.dataSet = SettingsManager.ItemList
+
+        updateAlarmEnabled(SettingsManager.isAlarmEnabled)
+        binding.switchAlarmAll.setOnCheckedChangeListener { _, isChecked ->
+            updateAlarmEnabled(isChecked)
+        }
+        
+        return binding.root
+    }
+
+    private fun updateAlarmEnabled(enable: Boolean) {
+        Log.d(TAG, "updateAlarmEnabled: $enable")
+
+        binding.switchAlarmAll.isChecked = enable
+        if(enable) alarmRecyclerView.visibility = View.VISIBLE
+        else alarmRecyclerView.visibility = View.INVISIBLE
+
+        SettingsManager.isAlarmEnabled = enable
     }
 
     companion object {

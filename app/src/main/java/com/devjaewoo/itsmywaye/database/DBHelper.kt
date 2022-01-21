@@ -6,22 +6,33 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.devjaewoo.itsmywaye.DATABASE_NAME
-import com.devjaewoo.itsmywaye.DATABASE_VERSION
-import com.devjaewoo.itsmywaye.TAG
+import com.devjaewoo.itsmywaye.*
+import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
 import java.io.IOException
 
-class DBHelper(context: Context)
+class DBHelper(val context: Context)
     : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
 
     override fun onCreate(db: SQLiteDatabase?) {
         Log.i(TAG, "onCreate: ")
 
+        db?.execSQL(Item.SQL_DROP_TABLE)
+        db?.execSQL(Alarm.SQL_DROP_TABLE)
+
         db?.execSQL(Item.SQL_CREATE_TABLE)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
+
+        context.resources.getStringArray(R.array.itemList).forEach {
+            val formattedString = it.replace("\\s".toRegex(), "")
+            db?.insert(Item.TableInfo.TABLE_NAME, null, ContentValues().apply {
+                put(Item.TableInfo.COLUMN_NAME_ITEM, formattedString)
+                put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)
+                put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "NULL")
+            })
+        }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -32,7 +43,11 @@ class DBHelper(context: Context)
 
         db?.execSQL(Item.SQL_CREATE_TABLE)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
-        onCreate(db)
+
+        context.resources.getStringArray(R.array.itemList).forEach {
+            val formattedString = "\"" + it.replace("\\s".toRegex(), "") + "\""
+            db?.execSQL("INSERT INTO ${Item.TableInfo.TABLE_NAME} VALUES ($formattedString, 0, NULL)")
+        }
     }
 
 

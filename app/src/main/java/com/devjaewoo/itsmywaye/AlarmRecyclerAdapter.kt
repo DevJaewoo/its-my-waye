@@ -1,11 +1,13 @@
 package com.devjaewoo.itsmywaye
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.model.Item
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -28,6 +30,15 @@ class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder
             name = view.findViewById(R.id.tv_alarm_name)
             enable = view.findViewById(R.id.switch_alarm_enable)
             setting = view.findViewById(R.id.ib_alarm_setting)
+
+            view.findViewById<SwitchMaterial>(R.id.switch_alarm_enable).setOnCheckedChangeListener { _, isChecked ->
+                Log.d(TAG, "onCheckedChangeListener[$id]: $isChecked")
+
+                if(SettingsManager.ItemList[id - 1].enabled != isChecked) {
+                    SettingsManager.ItemList[id - 1].enabled = isChecked
+                    ItemDAO(view.context).update(SettingsManager.ItemList[id - 1])
+                }
+            }
         }
 
         fun onBind(item: Item) {
@@ -45,7 +56,7 @@ class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: AlarmRecyclerAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.onBind(dataSet[position])
     }
 

@@ -24,15 +24,6 @@ class DBHelper(val context: Context)
 
         db?.execSQL(Item.SQL_CREATE_TABLE)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
-
-        context.resources.getStringArray(R.array.itemList).forEach {
-            val formattedString = it.replace("\\s".toRegex(), "")
-            db?.insert(Item.TableInfo.TABLE_NAME, null, ContentValues().apply {
-                put(Item.TableInfo.COLUMN_NAME_ITEM, formattedString)
-                put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)
-                put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "NULL")
-            })
-        }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -45,8 +36,12 @@ class DBHelper(val context: Context)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
 
         context.resources.getStringArray(R.array.itemList).forEach {
-            val formattedString = "\"" + it.replace("\\s".toRegex(), "") + "\""
-            db?.execSQL("INSERT INTO ${Item.TableInfo.TABLE_NAME} VALUES ($formattedString, 0, NULL)")
+            val formattedString = it.replace("\\s".toRegex(), "")
+            db?.insert(Item.TableInfo.TABLE_NAME, null, ContentValues().apply {
+                put(Item.TableInfo.COLUMN_NAME_ITEM, formattedString)
+                put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)
+                put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "NULL")
+            })
         }
     }
 

@@ -6,5 +6,6 @@
     <string name="menu_button">menu</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="alarm_header_text">알람 전체 활성화</string>
+    <string name="alarm_header_text">알람 활성화</string>
+    <string name="alarm_disturb_text">알람 금지 시간대</string>
 </resources>

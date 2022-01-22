@@ -8,6 +8,8 @@ import com.devjaewoo.itsmywaye.TAG
 import com.devjaewoo.itsmywaye.database.DBHelper
 import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ItemDAO(val context: Context) {
 
@@ -34,7 +36,7 @@ class ItemDAO(val context: Context) {
             val isEnabled = cursor.getInt(2) == 1
             var alarm: Alarm? = null
 
-            if(!cursor.getString(3).equals("NULL")) {
+            if(cursor.getString(3).lowercase(Locale.getDefault()) != "null") {
                 alarm = alarmDAO.select("${BaseColumns._ID} = ${cursor.getInt(3)}")
             }
 
@@ -55,7 +57,7 @@ class ItemDAO(val context: Context) {
             val isEnabled = cursor.getInt(2) == 1
             var alarm: Alarm? = null
 
-            if(!cursor.getString(3).equals("NULL")) {
+            if(cursor.getString(3).lowercase(Locale.getDefault()) != "null") {
                 alarm = alarmDAO.select("${BaseColumns._ID} = ${cursor.getInt(3)}")
             }
 

@@ -1,19 +1,18 @@
 package com.devjaewoo.itsmywaye
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
-import com.devjaewoo.itsmywaye.database.DBHelper
 import com.devjaewoo.itsmywaye.databinding.FragmentAlarmBinding
-import com.devjaewoo.itsmywaye.model.Item
+import java.lang.NumberFormatException
+
 
 class AlarmFragment : Fragment() {
 
@@ -24,7 +23,6 @@ class AlarmFragment : Fragment() {
 
     lateinit var alarmRecyclerView: RecyclerView
     lateinit var alarmRecyclerAdapter: AlarmRecyclerAdapter
-    lateinit var alarmList: List<Item>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,11 +40,54 @@ class AlarmFragment : Fragment() {
         alarmRecyclerView.adapter = alarmRecyclerAdapter
         alarmRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        alarmRecyclerAdapter.dataSet = SettingsManager.ItemList
+        alarmRecyclerAdapter.dataSet = ApplicationManager.ItemList
 
-        updateAlarmEnabled(SettingsManager.isAlarmEnabled)
+        updateAlarmEnabled(ApplicationManager.isAlarmEnabled)
+        updateAlarmOfftimeStart(ApplicationManager.alarmOffTimeStart)
+        updateAlarmOfftimeEnd(ApplicationManager.alarmOffTimeEnd)
+
         binding.switchAlarmAll.setOnCheckedChangeListener { _, isChecked ->
             updateAlarmEnabled(isChecked)
+        }
+
+
+        binding.editAlarmOfftimeStart.addTextChangedListener {
+            try {
+                updateAlarmOfftimeStart(it.toString().toInt())
+                binding.editAlarmOfftimeStart.setSelection(it?.length ?: 0)
+            }
+            catch (e: NumberFormatException) {}
+        }
+
+        binding.editAlarmOfftimeStart.setOnFocusChangeListener { _, isFocused ->
+            if(!isFocused) {
+                try {
+                    binding.editAlarmOfftimeStart.text.toString().toInt()
+                }
+                catch (e: NumberFormatException) {
+                    updateAlarmOfftimeStart(0)
+                }
+            }
+        }
+
+
+        binding.editAlarmOfftimeEnd.addTextChangedListener {
+            try {
+                updateAlarmOfftimeEnd(it.toString().toInt())
+                binding.editAlarmOfftimeEnd.setSelection(it?.length ?: 0)
+            }
+            catch (e: NumberFormatException) {}
+        }
+
+        binding.editAlarmOfftimeEnd.setOnFocusChangeListener { _, isFocused ->
+            if(!isFocused) {
+                try {
+                    binding.editAlarmOfftimeEnd.text.toString().toInt()
+                }
+                catch (e: NumberFormatException) {
+                    updateAlarmOfftimeEnd(0)
+                }
+            }
         }
         
         return binding.root
@@ -56,10 +97,40 @@ class AlarmFragment : Fragment() {
         Log.d(TAG, "updateAlarmEnabled: $enable")
 
         binding.switchAlarmAll.isChecked = enable
-        if(enable) alarmRecyclerView.visibility = View.VISIBLE
-        else alarmRecyclerView.visibility = View.INVISIBLE
+        if (enable) binding.alarmContent.visibility = View.VISIBLE
+        else binding.alarmContent.visibility = View.INVISIBLE
 
-        SettingsManager.isAlarmEnabled = enable
+        ApplicationManager.isAlarmEnabled = enable
+    }
+
+    private fun updateAlarmOfftimeStart(start: Int) {
+        val formattedStart = when {
+            start < 0 -> 0
+            start > 23 -> 23
+            else -> start
+        }
+
+        if(binding.editAlarmOfftimeStart.text.toString() != formattedStart.toString()) {
+            binding.editAlarmOfftimeStart.setText(formattedStart.toString()) //toString 안하면 가끔 에러남
+        }
+
+        Log.d(TAG, "updateAlarmOfftimeStart: $formattedStart")
+        ApplicationManager.alarmOffTimeStart = formattedStart
+    }
+
+    private fun updateAlarmOfftimeEnd(end: Int) {
+        val formattedEnd = when {
+            end < 0 -> 0
+            end > 23 -> 23
+            else -> end
+        }
+
+        if(binding.editAlarmOfftimeEnd.text.toString() != formattedEnd.toString()) {
+            binding.editAlarmOfftimeEnd.setText(formattedEnd.toString()) //toString 안하면 가끔 에러남
+        }
+
+        Log.d(TAG, "updateAlarmOfftimeEnd: $formattedEnd")
+        ApplicationManager.alarmOffTimeEnd = formattedEnd
     }
 
     companion object {

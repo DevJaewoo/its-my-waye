@@ -1,13 +1,13 @@
-package com.devjaewoo.itsmywaye;
+package com.devjaewoo.itsmywaye
 
-import android.app.Application;
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.model.Item
 
-class SettingsManager : Application() {
+class ApplicationManager : Application() {
 
     companion object {
 

@@ -34,9 +34,9 @@ class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder
             view.findViewById<SwitchMaterial>(R.id.switch_alarm_enable).setOnCheckedChangeListener { _, isChecked ->
                 Log.d(TAG, "onCheckedChangeListener[$id]: $isChecked")
 
-                if(SettingsManager.ItemList[id - 1].enabled != isChecked) {
-                    SettingsManager.ItemList[id - 1].enabled = isChecked
-                    ItemDAO(view.context).update(SettingsManager.ItemList[id - 1])
+                if(ApplicationManager.ItemList[id - 1].enabled != isChecked) {
+                    ApplicationManager.ItemList[id - 1].enabled = isChecked
+                    ItemDAO(view.context).update(ApplicationManager.ItemList[id - 1])
                 }
             }
         }

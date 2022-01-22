@@ -1,8 +1,6 @@
 package com.devjaewoo.itsmywaye.dao
 
-import android.app.Instrumentation
 import android.provider.BaseColumns
-import androidx.test.espresso.internal.inject.InstrumentationContext
 import androidx.test.platform.app.InstrumentationRegistry
 import com.devjaewoo.itsmywaye.DATABASE_NAME
 import com.devjaewoo.itsmywaye.model.Alarm

@@ -32,6 +32,6 @@ class Item(var name: String, var enabled: Boolean, var alarm: Alarm? = null) {
     }
 
     override fun toString(): String {
-        return "Item(ID: $id, Name: $name, Enabled: $enabled, AlarmID: ${alarm?.id ?: "null"})"
+        return "Item(ID: $id, Name: $name, Enabled: $enabled, AlarmID: ${alarm?.id ?: "NULL"})"
     }
 }

@@ -6,7 +6,6 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.BaseColumns
 import android.util.Log
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import com.devjaewoo.itsmywaye.DATABASE_NAME
 import com.devjaewoo.itsmywaye.TAG
@@ -39,11 +38,13 @@ class DBHelperTest {
         db.insert(Item.TableInfo.TABLE_NAME, ContentValues().apply {
             put(Item.TableInfo.COLUMN_NAME_ITEM, "Waye")
             put(Item.TableInfo.COLUMN_NAME_ENABLE, 1)
+            put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "null")
         })
 
         db.insert(Item.TableInfo.TABLE_NAME, ContentValues().apply {
             put(Item.TableInfo.COLUMN_NAME_ITEM, "Legendary")
             put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)
+            put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "null")
         })
     }
 
@@ -110,6 +111,7 @@ class DBHelperTest {
         val values = ContentValues().apply {
             put(Item.TableInfo.COLUMN_NAME_ITEM, "ITEM1234")
             put(Item.TableInfo.COLUMN_NAME_ENABLE, "0")
+            put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "null")
         }
 
         db.update(Item.TableInfo.TABLE_NAME, values, "${BaseColumns._ID} = ?", "1")
@@ -130,6 +132,7 @@ class DBHelperTest {
         val values = ContentValues().apply {
             put(Item.TableInfo.COLUMN_NAME_ITEM, "ITEM1234")
             put(Item.TableInfo.COLUMN_NAME_ENABLE, "0")
+            put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "null")
         }
 
         db.update(Item.TableInfo.TABLE_NAME, values, "${BaseColumns._ID} = ? OR ${Item.TableInfo.COLUMN_NAME_ITEM} = ?", arrayOf("1", "Legendary"))

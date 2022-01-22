@@ -9,6 +9,6 @@ class AlarmManager {
 
 
     private fun startAlarm(alarm: Alarm) {
-        val alarmIntent: Intent = Intent(SettingsManager.ApplicationContext, AlarmService::class.java)
+        val alarmIntent: Intent = Intent(ApplicationManager.ApplicationContext, AlarmService::class.java)
     }
 }

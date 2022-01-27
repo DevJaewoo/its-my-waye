@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.devjaewoo.itsmywaye.*
-import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
 import java.io.IOException
@@ -26,7 +25,7 @@ class DBHelper(val context: Context)
         db?.execSQL(Alarm.SQL_CREATE_TABLE)
 
         context.resources.getStringArray(R.array.itemList).forEach {
-            val formattedString = it.replace("\\s".toRegex(), "")
+            val formattedString = it.blankRemovedString
             db?.insert(Item.TableInfo.TABLE_NAME, null, ContentValues().apply {
                 put(Item.TableInfo.COLUMN_NAME_ITEM, formattedString)
                 put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)

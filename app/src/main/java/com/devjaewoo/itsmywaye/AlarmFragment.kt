@@ -53,8 +53,8 @@ class AlarmFragment : Fragment() {
 
         binding.editAlarmOfftimeStart.addTextChangedListener {
             try {
-                updateAlarmOfftimeStart(it.toString().toInt())
                 binding.editAlarmOfftimeStart.setSelection(it?.length ?: 0)
+                updateAlarmOfftimeStart(it.toString().toInt())
             }
             catch (e: NumberFormatException) {}
         }
@@ -73,8 +73,8 @@ class AlarmFragment : Fragment() {
 
         binding.editAlarmOfftimeEnd.addTextChangedListener {
             try {
-                updateAlarmOfftimeEnd(it.toString().toInt())
                 binding.editAlarmOfftimeEnd.setSelection(it?.length ?: 0)
+                updateAlarmOfftimeEnd(it.toString().toInt())
             }
             catch (e: NumberFormatException) {}
         }

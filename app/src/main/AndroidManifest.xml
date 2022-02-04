@@ -27,6 +27,8 @@
             </intent-filter>
         </service>
 
+        <service android:name=".AlarmService"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

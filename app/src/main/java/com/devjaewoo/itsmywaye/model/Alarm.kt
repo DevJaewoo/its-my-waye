@@ -5,8 +5,8 @@ import android.provider.BaseColumns
 class Alarm(
     var filePath: String,
     var volume: Int = 100,
-    var repeatTimes: Int = 20, //반복 시간(분)
-    var interval: Int = 0) { //알림이 한번 종료된 후 다음 반복까지의 시간(분), 0: 계속 반복
+    var repeatTimes: Int = 3, //반복 횟수
+    var interval: Int = 5) { //알림이 한번 종료된 후 다음 반복까지의 시간(분), 0: 계속 반복
 
     var id: Int = -1
 

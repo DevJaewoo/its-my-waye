@@ -16,7 +16,7 @@ class ApplicationManager : Application() {
         private const val PREFERENCE_ALARM_OFFTIME_START = "alarm_offtime_start"
         private const val PREFERENCE_ALARM_OFFTIME_END = "alarm_offtime_end"
 
-        lateinit var ApplicationContext: Context
+        lateinit var applicationContext: Context
         lateinit var sharedPreferences: SharedPreferences
 
         var isAlarmEnabled: Boolean = false
@@ -48,7 +48,7 @@ class ApplicationManager : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ApplicationContext = applicationContext
+        ApplicationManager.applicationContext = applicationContext
         sharedPreferences = getSharedPreferences(PREFERENCE_NAME, 0)
 
         loadPreferences()
@@ -67,7 +67,7 @@ class ApplicationManager : Application() {
                 "AlarmOffTimeStart: $alarmOffTimeStart\n" +
                 "AlarmOffTimeEnd: $alarmOffTimeEnd")
 
-        val itemDAO = ItemDAO(ApplicationContext)
+        val itemDAO = ItemDAO(applicationContext)
         ItemList = itemDAO.selectAll()
         Log.d(TAG, "loadPreferences: $ItemList")
     }

@@ -1,12 +1,16 @@
 package com.devjaewoo.itsmywaye
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.devjaewoo.itsmywaye.model.Alarm
+import java.util.*
 
-//알림이 들어왔을 때 알림에서 뭐가 떴는지 확인하고 그게 알림 설정 되어있는지 판단하여 소리 재생
 object AlarmManager {
 
     /**
@@ -28,7 +32,27 @@ object AlarmManager {
         return -1
     }
 
+    fun isAlarmEnabled(hour: Int): Boolean {
+        if(!ApplicationManager.isAlarmEnabled) return false
+
+        val alarmOffTimeStart = ApplicationManager.alarmOffTimeStart
+        var alarmOffTimeEnd = ApplicationManager.alarmOffTimeEnd
+        var currentTime = hour
+
+        if(alarmOffTimeStart > alarmOffTimeEnd) alarmOffTimeEnd += 24
+        if(alarmOffTimeStart > currentTime) currentTime += 24
+
+        return currentTime !in alarmOffTimeStart until alarmOffTimeEnd
+    }
+
     fun startAlarm(message: String) {
+
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        if(!isAlarmEnabled(currentHour)) {
+            Log.d(TAG, "startAlarm: Alarm is disabled at $currentHour.")
+            return
+        }
+
         val itemIndex = getItemIndex(message)
         Log.d(TAG, "startAlarm: Item index of $message is $itemIndex")
         if(itemIndex == -1) return
@@ -39,17 +63,46 @@ object AlarmManager {
 
         val alarm = item.alarm ?: Alarm(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString(), 100, 3, 5)
 
-        val alarmIntent = Intent(ApplicationManager.applicationContext, AlarmService::class.java)
-        alarmIntent.putExtra(EXTRA_ALARM_URI, alarm.filePath)
-        alarmIntent.putExtra(EXTRA_ALARM_VOLUME, alarm.volume)
-        alarmIntent.putExtra(EXTRA_ALARM_REPEAT, alarm.repeatTimes)
-        alarmIntent.putExtra(EXTRA_ALARM_INTERVAL, alarm.interval)
+        val alarmIntent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
+            action = ACTION_ALARM_ON
+            putExtra(EXTRA_ALARM_URI, alarm.filePath)
+            putExtra(EXTRA_ALARM_VOLUME, alarm.volume)
+            putExtra(EXTRA_ALARM_REPEAT, alarm.repeatTimes)
+            putExtra(EXTRA_ALARM_INTERVAL, alarm.interval)
+        }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ApplicationManager.applicationContext.startForegroundService(alarmIntent)
+            ApplicationManager.applicationContext.startService(alarmIntent)
         }
         else {
             ApplicationManager.applicationContext.startService(alarmIntent)
         }
+
+        createNotification(item.name)
+    }
+
+    private fun createNotification(content: String) {
+        val intent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
+            action = ACTION_ALARM_OFF
+            putExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_ID)
+        }
+
+        val pendingIntent: PendingIntent = PendingIntent.getService(
+            ApplicationManager.applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+
+        val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(ApplicationManager.applicationContext, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+            .setContentTitle(APPLICATION_NAME)
+            .setContentText(content)
+            .addAction(R.drawable.ic_baseline_access_alarm_24, "SNOOZE", pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        Log.d(TAG, "createNotification: $APPLICATION_NAME/$content")
+        notificationManager.notify(NOTIFICATION_ID, notification)
     }
 }

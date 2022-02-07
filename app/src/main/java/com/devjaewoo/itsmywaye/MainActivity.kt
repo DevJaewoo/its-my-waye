@@ -1,5 +1,6 @@
 package com.devjaewoo.itsmywaye
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
@@ -27,9 +28,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     companion object {
         private const val DRAWER_GRAVITY = GravityCompat.START
-
-        lateinit var audioManager: AudioManager
-        lateinit var notificationManager: NotificationManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +36,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         requestWriteSettingsPermission()
         requestNotificationPermission()
+        createNotificationChannel()
 
         binding.contentMain.toolbar.ibToolbar.setOnClickListener {
             toggleDrawerLayout(binding.root)
@@ -108,11 +104,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun isNotificationPermissionGranted(): Boolean {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             return notificationManager.isNotificationListenerAccessGranted(ComponentName(application, MessageListenerService::class.java))
         }
         else {
             return NotificationManagerCompat.getEnabledListenerPackages(applicationContext).contains(applicationContext.packageName)
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager = getSystemService(NotificationManager::class.java)
+            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_NONE)
+            manager.createNotificationChannel(notificationChannel)
         }
     }
 }

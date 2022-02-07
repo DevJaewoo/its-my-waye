@@ -12,9 +12,10 @@ class ApplicationManager : Application() {
     companion object {
 
         private const val PREFERENCE_ALARM_ENABLED = "alarm_enabled"
-        private const val PREFERENCE_NOTIFICATION_ENABLED = "notification_enabled"
         private const val PREFERENCE_ALARM_OFFTIME_START = "alarm_offtime_start"
         private const val PREFERENCE_ALARM_OFFTIME_END = "alarm_offtime_end"
+        private const val PREFERENCE_NOTIFICATION_ENABLED = "notification_enabled"
+        private const val PREFERENCE_NOTIFICATION_ALLOW_ALL = "notification_allow_all"
 
         lateinit var applicationContext: Context
         lateinit var sharedPreferences: SharedPreferences
@@ -22,12 +23,6 @@ class ApplicationManager : Application() {
         var isAlarmEnabled: Boolean = false
             set(value) {
                 if(value != field) sharedPreferences.edit().putBoolean(PREFERENCE_ALARM_ENABLED, value).apply()
-                field = value
-            }
-
-        var isNotificationEnabled: Boolean = false
-            set(value) {
-                if(value != field) sharedPreferences.edit().putBoolean(PREFERENCE_NOTIFICATION_ENABLED, value).apply()
                 field = value
             }
 
@@ -43,6 +38,19 @@ class ApplicationManager : Application() {
                 field = value
             }
 
+        var isNotificationEnabled: Boolean = false
+            set(value) {
+                if(value != field) sharedPreferences.edit().putBoolean(PREFERENCE_NOTIFICATION_ENABLED, value).apply()
+                field = value
+            }
+
+        var isNotificationAllowAll: Boolean = true
+            set(value) {
+                if(value != field) sharedPreferences.edit().putBoolean(PREFERENCE_NOTIFICATION_ALLOW_ALL, value).apply()
+            }
+
+        var listAllowedPackageName: ArrayList<String> = ArrayList(arrayListOf("com.discord", "com.kakao.talk"))
+
         lateinit var ItemList: List<Item>
     }
 
@@ -57,15 +65,17 @@ class ApplicationManager : Application() {
     private fun loadPreferences() {
 
         isAlarmEnabled = sharedPreferences.getBoolean(PREFERENCE_ALARM_ENABLED, false)
-        isNotificationEnabled = sharedPreferences.getBoolean(PREFERENCE_NOTIFICATION_ENABLED, false)
         alarmOffTimeStart = sharedPreferences.getInt(PREFERENCE_ALARM_OFFTIME_START, 0)
         alarmOffTimeEnd = sharedPreferences.getInt(PREFERENCE_ALARM_OFFTIME_END, 0)
+        isNotificationEnabled = sharedPreferences.getBoolean(PREFERENCE_NOTIFICATION_ENABLED, false)
+        isNotificationAllowAll = sharedPreferences.getBoolean(PREFERENCE_NOTIFICATION_ALLOW_ALL, false)
 
         Log.d(TAG, "loadPreferences: \n" +
                 "AlarmEnabled: $isAlarmEnabled\n" +
-                "NotificationEnabled: $isNotificationEnabled\n" +
                 "AlarmOffTimeStart: $alarmOffTimeStart\n" +
-                "AlarmOffTimeEnd: $alarmOffTimeEnd")
+                "AlarmOffTimeEnd: $alarmOffTimeEnd" +
+                "NotificationEnabled: $isNotificationEnabled\n" +
+                "NotificationEnabled: $isNotificationAllowAll\n")
 
         val itemDAO = ItemDAO(applicationContext)
         ItemList = itemDAO.selectAll()

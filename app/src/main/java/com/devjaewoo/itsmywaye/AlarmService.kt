@@ -1,6 +1,5 @@
 package com.devjaewoo.itsmywaye
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
@@ -9,10 +8,8 @@ import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationCompat
 
 // 여기서 on off on off 다 정해놓고 그대로 알람 틀다가
 // Notification에서 Intent 들어오면 종료
@@ -45,9 +42,9 @@ class AlarmService : Service() {
         if(intent != null) {
             if(intent.action == ACTION_ALARM_ON) {
                 uri = intent.getStringExtra(EXTRA_ALARM_URI) ?: ""
-                volume = intent.getIntExtra(EXTRA_ALARM_VOLUME, 100) ?: 100
-                repeatTimes = intent.getIntExtra(EXTRA_ALARM_REPEAT, 3) ?: 3
-                interval = intent.getIntExtra(EXTRA_ALARM_INTERVAL, 5) ?: 5
+                volume = intent.getIntExtra(EXTRA_ALARM_VOLUME, 100)
+                repeatTimes = intent.getIntExtra(EXTRA_ALARM_REPEAT, 3)
+                interval = intent.getIntExtra(EXTRA_ALARM_INTERVAL, 5)
 
                 Log.d(TAG, "onStartCommand: Alarm Received: uri: $uri, volume: $volume, repeatTimes: $repeatTimes, interval: $interval")
 
@@ -62,7 +59,7 @@ class AlarmService : Service() {
                 }
             }
             else {
-                val notificationID: Int = intent.getIntExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_ID)
+                val notificationID: Int = intent.getIntExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_DEFAULT_ID)
                 val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.cancel(notificationID)
                 stopRingtone()

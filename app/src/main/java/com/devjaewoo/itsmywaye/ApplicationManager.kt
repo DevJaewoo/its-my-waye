@@ -64,7 +64,7 @@ class ApplicationManager : Application() {
 
     private fun loadPreferences() {
 
-        isAlarmEnabled = sharedPreferences.getBoolean(PREFERENCE_ALARM_ENABLED, false)
+        isAlarmEnabled = sharedPreferences.getBoolean(PREFERENCE_ALARM_ENABLED, true)
         alarmOffTimeStart = sharedPreferences.getInt(PREFERENCE_ALARM_OFFTIME_START, 0)
         alarmOffTimeEnd = sharedPreferences.getInt(PREFERENCE_ALARM_OFFTIME_END, 0)
         isNotificationEnabled = sharedPreferences.getBoolean(PREFERENCE_NOTIFICATION_ENABLED, false)

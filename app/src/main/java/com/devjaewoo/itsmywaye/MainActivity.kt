@@ -5,15 +5,12 @@ import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.Gravity
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
@@ -36,8 +33,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        requestWriteSettingsPermission()
-        requestNotificationPermission()
+        requestPermissions()
         createNotificationChannel()
 
         binding.contentMain.toolbar.ibToolbar.setOnClickListener {
@@ -89,21 +85,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun requestPermissions() {
+        requestWriteSettingsPermission()
+        requestNotificationReadPermission()
+        requestNotificationWritePermission()
+    }
+
     private fun requestWriteSettingsPermission() {
-        if(!Settings.System.canWrite(this)) {
+        if(!isWriteSettingsPermissionGranted()) {
             Toast.makeText(this, "알림음을 켜기 위해 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS))
         }
     }
 
-    private fun requestNotificationPermission() {
-        if(!isNotificationPermissionGranted()) {
+    private fun requestNotificationReadPermission() {
+        if(!isNotificationReadPermissionGranted()) {
             Toast.makeText(this, "알림을 읽기 위해 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
     }
 
-    private fun isNotificationPermissionGranted(): Boolean {
+    private fun requestNotificationWritePermission() {
+        if(!isNotificationWritePermissionGranted()) {
+            Toast.makeText(this, "알림을 띄우기 위해 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        }
+    }
+
+    private fun isWriteSettingsPermissionGranted(): Boolean = Settings.System.canWrite(this)
+
+    private fun isNotificationReadPermissionGranted(): Boolean {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -114,10 +125,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun isNotificationWritePermissionGranted(): Boolean = NotificationManagerCompat.from(this).areNotificationsEnabled()
+
     private fun createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = getSystemService(NotificationManager::class.java)
-            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_NONE)
+            val notificationChannel = NotificationChannel(NOTIFICATION_DEFAULT_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
             manager.createNotificationChannel(notificationChannel)
         }
     }

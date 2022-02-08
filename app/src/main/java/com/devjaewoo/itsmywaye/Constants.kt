@@ -15,9 +15,9 @@ const val DATABASE_NAME: String = "itsmywaye.db"
 const val DATABASE_VERSION: Int = 1
 
 
-const val NOTIFICATION_CHANNEL_ID: String = "ItsMyWaye"
-const val NOTIFICATION_CHANNEL_NAME: String = "ItsMyWaye"
-const val NOTIFICATION_ID: Int = 142857
+const val NOTIFICATION_DEFAULT_CHANNEL_ID: String = "default"
+const val NOTIFICATION_DEFAULT_CHANNEL_NAME: String = "default"
+const val NOTIFICATION_DEFAULT_ID: Int = 333333333  // Notification.IMPORTANCE_DEFAULT = 3
 
 const val EXTRA_NOTIFICATION_ID: String = "com.devjaewoo.itsmywaye.extra.EXTRA_NOTIFICATION_ID"
 

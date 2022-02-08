@@ -84,7 +84,7 @@ object AlarmManager {
     private fun createNotification(content: String) {
         val intent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
             action = ACTION_ALARM_OFF
-            putExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_ID)
+            putExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_DEFAULT_ID)
         }
 
         val pendingIntent: PendingIntent = PendingIntent.getService(
@@ -94,7 +94,7 @@ object AlarmManager {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
 
         val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(ApplicationManager.applicationContext, NOTIFICATION_CHANNEL_ID)
+        val notification = NotificationCompat.Builder(ApplicationManager.applicationContext, NOTIFICATION_DEFAULT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
             .setContentTitle(APPLICATION_NAME)
             .setContentText(content)
@@ -103,6 +103,6 @@ object AlarmManager {
             .build()
 
         Log.d(TAG, "createNotification: $APPLICATION_NAME/$content")
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        notificationManager.notify(NOTIFICATION_DEFAULT_ID, notification)
     }
 }

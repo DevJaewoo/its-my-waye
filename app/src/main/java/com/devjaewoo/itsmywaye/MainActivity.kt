@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.menu_notification -> {
                 Log.d(TAG, "onNavigationItemSelected: Set fragment to Notification")
-                setFragment(NotificationFragment())
+                setFragment(NotificationFragment.newInstance())
             }
 
             R.id.menu_settings -> {

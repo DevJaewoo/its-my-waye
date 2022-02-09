@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/activity_main.xml" value="0.2046875" />
-        <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/fragment_notification.xml" value="0.1625" />
+        <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/alarm_list_item.xml" value="0.5" />
+        <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/fragment_alarm.xml" value="0.22" />
+        <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/fragment_notification.xml" value="0.2763385146804836" />
         <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/fragment_alarm.xml" value="0.33" />
       </map>
     </option>

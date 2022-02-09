@@ -8,4 +8,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="alarm_header_text">알람 활성화</string>
     <string name="alarm_disturb_text">알람 금지 시간대</string>
+    <string name="notification_header_text">모든 앱으로부터 알림 받기</string>
+    <string name="notification_discord_text">디스코드 알림 받기</string>
+    <string name="notification_kakaotalk_text">카카오톡 알림 받기</string>
 </resources>

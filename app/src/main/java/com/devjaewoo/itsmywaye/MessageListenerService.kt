@@ -41,7 +41,10 @@ class MessageListenerService : NotificationListenerService() {
     private fun isPackageNameInWhiteList(packageName: String?): Boolean =
         when {
             packageName == applicationContext.packageName -> false
-            ApplicationManager.isNotificationAllowAll -> true
-            else -> ApplicationManager.listAllowedPackageName.any { n -> n == packageName }
+            ApplicationManager.isAllNotificationAllowed -> true
+            packageName == PACKAGE_NAME_DISCORD && ApplicationManager.isDiscordNotificationAllowed -> true
+            packageName == PACKAGE_NAME_KAKAOTALK && ApplicationManager.isKakaotalkNotificationAllowed -> true
+            else -> false
+            //ApplicationManager.listAllowedPackageName.any { n -> n == packageName }
         }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">It\'s My Waye</string>
+    <string name="app_name">마이웨이</string>
     <string name="menu_alarm">Alarm</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_settings">Settings</string>

@@ -98,8 +98,9 @@ object AlarmManager {
             .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
             .setContentTitle(APPLICATION_NAME)
             .setContentText(content)
-            .addAction(R.drawable.ic_baseline_access_alarm_24, "SNOOZE", pendingIntent)
+            .addAction(R.drawable.ic_baseline_access_alarm_24, "알람 끄기", pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setOngoing(true)
             .build()
 
         Log.d(TAG, "createNotification: $APPLICATION_NAME/$content")

@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.menu_settings -> {
                 Log.d(TAG, "onNavigationItemSelected: Set fragment to Settings")
-                setFragment(SettingsFragment())
+                setFragment(SettingsFragment.newInstance())
             }
 
             else -> {
@@ -86,42 +86,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun requestPermissions() {
-        requestWriteSettingsPermission()
-        requestNotificationReadPermission()
         requestNotificationWritePermission()
-    }
-
-    private fun requestWriteSettingsPermission() {
-        if(!isWriteSettingsPermissionGranted()) {
-            Toast.makeText(this, "알림음을 켜기 위해 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS))
-        }
-    }
-
-    private fun requestNotificationReadPermission() {
-        if(!isNotificationReadPermissionGranted()) {
-            Toast.makeText(this, "알림을 읽기 위해 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-        }
     }
 
     private fun requestNotificationWritePermission() {
         if(!isNotificationWritePermissionGranted()) {
             Toast.makeText(this, "알림을 띄우기 위해 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-        }
-    }
-
-    private fun isWriteSettingsPermissionGranted(): Boolean = Settings.System.canWrite(this)
-
-    private fun isNotificationReadPermissionGranted(): Boolean {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            return notificationManager.isNotificationListenerAccessGranted(ComponentName(application, MessageListenerService::class.java))
-        }
-        else {
-            return NotificationManagerCompat.getEnabledListenerPackages(applicationContext).contains(applicationContext.packageName)
         }
     }
 

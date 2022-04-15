@@ -8,7 +8,13 @@
         <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/fragment_alarm.xml" value="0.22" />
         <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/fragment_notification.xml" value="0.2763385146804836" />
         <entry key="..\:/workspace/Projects/ItsMyWaye/app/src/main/res/layout/toolbar.xml" value="0.228125" />
+        <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/activity_main.xml" value="0.31302083333333336" />
+        <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/activity_permission.xml" value="0.25" />
+        <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/content_main.xml" value="0.31302083333333336" />
         <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/fragment_alarm.xml" value="0.33" />
+        <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/fragment_notification_permission.xml" value="0.31302083333333336" />
+        <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/fragment_settings.xml" value="0.3098958333333333" />
+        <entry key="..\:/workspace/Projects/its-my-waye/app/src/main/res/layout/fragment_write_settings_permission.xml" value="0.31302083333333336" />
       </map>
     </option>
   </component>

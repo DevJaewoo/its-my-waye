@@ -4,9 +4,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
-import android.media.Ringtone
-import android.media.RingtoneManager
+import android.media.*
 import android.net.Uri
 import android.os.IBinder
 import android.util.Log
@@ -16,6 +14,7 @@ import android.util.Log
 class AlarmService : Service() {
 
     private var ringtone: Ringtone? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     var uri: String = ""
     var volume: Int = 100
@@ -48,12 +47,18 @@ class AlarmService : Service() {
 
                 Log.d(TAG, "onStartCommand: Alarm Received: uri: $uri, volume: $volume, repeatTimes: $repeatTimes, interval: $interval")
 
-                if (ringtone?.isPlaying != true) {
-                    ringtone = RingtoneManager.getRingtone(applicationContext, Uri.parse(uri))
-                        ?: RingtoneManager.getRingtone(
-                            applicationContext,
-                            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                        )
+                if (mediaPlayer == null || !(mediaPlayer!!.isPlaying)) {
+                    if(RingtoneManager.getRingtone(applicationContext, Uri.parse(uri)) == null) {
+                        Log.w(TAG, "onStartCommand: Cannot find ringtone at $uri. Setting uri to default alarm ringtone.")
+                        uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString()
+                    }
+
+                    mediaPlayer = MediaPlayer.create(this, Uri.parse(uri)).apply {
+                        stop()
+                        isLooping = true
+                        setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build()) //알람 볼륨으로 소리 켬
+                        prepare()
+                    }
 
                     playRingtone()
                 }
@@ -75,17 +80,23 @@ class AlarmService : Service() {
 
     private fun playRingtone() {
         Log.d(TAG, "playRingtone: ")
-        if(ringtone?.isPlaying == false) {
+        if(mediaPlayer?.isPlaying == false) {
             changeAudioState(volume)
-            ringtone?.play()
+            mediaPlayer?.start()
+        }
+        else {
+            Log.d(TAG, "playRingtone: Alarm is already playing")
         }
     }
 
     private fun stopRingtone() {
         Log.d(TAG, "stopRingtone: ")
-        if(ringtone?.isPlaying == true) {
-            ringtone?.stop()
+        if(mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.stop()
             restoreAudioState()
+        }
+        else {
+            Log.d(TAG, "stopRingtone: Alarm is not playing")
         }
     }
 
@@ -94,18 +105,19 @@ class AlarmService : Service() {
     private fun changeAudioState(volume: Int) {
 
         savedRingerMode = audioManager.ringerMode
-        savedVolume = audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
+        savedVolume = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)
+
+        Log.d(TAG, "changeAudioState: SavedVolume: $savedVolume MaxVolume: ${audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)} CurrentVolume: ${(audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) * (volume / 100.0)).toInt()}")
 
         audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
         audioManager.setStreamVolume(
-            AudioManager.STREAM_ALARM,
-            (audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM) * (volume / 100.0)).toInt(),
+            AudioManager.STREAM_NOTIFICATION,
+            (audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) * (volume / 100.0)).toInt(),
             0)
-        //AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
     }
 
     private fun restoreAudioState() {
-        audioManager.setStreamVolume(AudioManager.STREAM_ALARM, savedVolume, 0)
+        audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, savedVolume, 0)
         audioManager.ringerMode = savedRingerMode
     }
 }

@@ -96,7 +96,7 @@ object AlarmManager {
         val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notification = NotificationCompat.Builder(ApplicationManager.applicationContext, NOTIFICATION_DEFAULT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-            .setContentTitle(APPLICATION_NAME)
+            .setContentTitle("마이웨이")
             .setContentText(content)
             .addAction(R.drawable.ic_baseline_access_alarm_24, "알람 끄기", pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

@@ -21,7 +21,12 @@ class PermissionActivity : AppCompatActivity() {
     private val binding: ActivityPermissionBinding get() = _binding!!
 
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        refreshPermissionStatus()
+        if(result.resultCode == RESULT_CLOSE) {
+            finish()
+        }
+        else {
+            refreshPermissionStatus()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +65,7 @@ class PermissionActivity : AppCompatActivity() {
         }
         else {
             val intent = Intent(ApplicationManager.applicationContext, MainActivity::class.java)
-            startActivity(intent)
+            resultLauncher.launch(intent)
         }
     }
 

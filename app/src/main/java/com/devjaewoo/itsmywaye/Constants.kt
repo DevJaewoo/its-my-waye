@@ -10,6 +10,9 @@ val String.blankRemovedString: String
 // Application
 const val APPLICATION_NAME: String = "It's My Waye"
 
+// Activity Results
+const val RESULT_CLOSE: Int = 99
+
 // Preferences
 const val PREFERENCE_NAME: String = "ItsMyWaye"
 

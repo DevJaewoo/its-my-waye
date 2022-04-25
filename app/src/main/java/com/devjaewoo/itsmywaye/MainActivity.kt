@@ -2,8 +2,6 @@ package com.devjaewoo.itsmywaye
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +20,7 @@ import com.google.android.material.navigation.NavigationView
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private var lastBackPressedTime: Long = 0
 
     companion object {
         private const val DRAWER_GRAVITY = GravityCompat.START
@@ -42,6 +41,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.navView.setNavigationItemSelectedListener(this)
         setFragment(AlarmFragment())
+    }
+
+    override fun onBackPressed() {
+        val currentTime = System.currentTimeMillis()
+        if(currentTime - lastBackPressedTime < 1000) {
+            setResult(RESULT_CLOSE)
+            finish()
+        }
+        else {
+            Toast.makeText(this, "'이전' 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+            lastBackPressedTime = currentTime
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

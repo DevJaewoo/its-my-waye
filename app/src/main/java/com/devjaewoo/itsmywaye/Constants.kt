@@ -25,7 +25,7 @@ const val PREFERENCE_NOTIFICATION_ALLOW_KAKAOTALK = "notification_allow_kakaotal
 
 // Database
 const val DATABASE_NAME: String = "itsmywaye.db"
-const val DATABASE_VERSION: Int = 1
+const val DATABASE_VERSION: Int = 2
 
 // Notification Read
 const val PACKAGE_NAME_DISCORD: String = "com.discord"

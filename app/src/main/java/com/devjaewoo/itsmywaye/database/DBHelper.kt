@@ -36,20 +36,22 @@ class DBHelper(val context: Context)
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         Log.i(TAG, "onUpgrade: ")
+        for(version in oldVersion until newVersion) {
+            migrate(db, version)
+        }
+    }
 
-        db?.execSQL(Item.SQL_DROP_TABLE)
-        db?.execSQL(Alarm.SQL_DROP_TABLE)
-
-        db?.execSQL(Item.SQL_CREATE_TABLE)
-        db?.execSQL(Alarm.SQL_CREATE_TABLE)
-
-        context.resources.getStringArray(R.array.itemList).forEach {
-            val formattedString = it.replace("\\s".toRegex(), "")
-            db?.insert(Item.TableInfo.TABLE_NAME, null, ContentValues().apply {
-                put(Item.TableInfo.COLUMN_NAME_ITEM, formattedString)
-                put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)
-                put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "NULL")
-            })
+    //다음 버전으로 DB 이전
+    private fun migrate(db: SQLiteDatabase?, oldVersion: Int) {
+        Log.i(TAG, "migrate: Migrate DB ver.$oldVersion to ver.${oldVersion + 1}")
+        when(oldVersion) {
+            1 -> { //에버그레이스 추가
+                db?.insert(Item.TableInfo.TABLE_NAME, null, ContentValues().apply {
+                    put(Item.TableInfo.COLUMN_NAME_ITEM, "에버그레이스".blankRemovedString)
+                    put(Item.TableInfo.COLUMN_NAME_ENABLE, 0)
+                    put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "NULL")
+                })
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 <resources>
     <string-array name="itemList">
         <item>웨이</item>
+        <item>에버그레이스</item>
         <item>전설호감도</item>
         <item>영웅호감도</item>
         <item>모카모카</item>

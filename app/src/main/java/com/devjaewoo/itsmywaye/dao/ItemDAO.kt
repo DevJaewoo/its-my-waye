@@ -4,7 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.provider.BaseColumns
 import android.util.Log
+import com.devjaewoo.itsmywaye.ApplicationManager
+import com.devjaewoo.itsmywaye.R
 import com.devjaewoo.itsmywaye.TAG
+import com.devjaewoo.itsmywaye.blankRemovedString
 import com.devjaewoo.itsmywaye.database.DBHelper
 import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
@@ -41,6 +44,11 @@ class ItemDAO(val context: Context) {
             }
 
             list.add(Item(id, name, isEnabled, alarm))
+        }
+
+        list.sortBy {
+            val index = ApplicationManager.ItemNameList.indexOf(it.name)
+            if(index != -1) index else 99
         }
 
         return list

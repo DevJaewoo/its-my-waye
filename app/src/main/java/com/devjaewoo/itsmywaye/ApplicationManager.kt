@@ -54,6 +54,7 @@ class ApplicationManager : Application() {
 
         //var listAllowedPackageName: ArrayList<String> = ArrayList(arrayListOf("com.discord", "com.kakao.talk"))
 
+        lateinit var ItemNameList: List<String>
         lateinit var ItemList: List<Item>
     }
 
@@ -81,6 +82,8 @@ class ApplicationManager : Application() {
                 "AllNotificationAllowed: $isAllNotificationAllowed\n" +
                 "DiscordNotificationAllowed: $isDiscordNotificationAllowed\n" +
                 "KakaotalkNotificationAllowed: $isKakaotalkNotificationAllowed\n")
+
+        ItemNameList = applicationContext.resources.getStringArray(R.array.itemList).toList()
 
         val itemDAO = ItemDAO(applicationContext)
         ItemList = itemDAO.selectAll()

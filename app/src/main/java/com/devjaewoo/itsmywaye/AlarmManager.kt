@@ -32,6 +32,7 @@ object AlarmManager {
         return -1
     }
 
+    //현재 알람 금지 시간대인지 판별
     fun isAlarmEnabled(hour: Int): Boolean {
         if(!ApplicationManager.isAlarmEnabled) return false
 

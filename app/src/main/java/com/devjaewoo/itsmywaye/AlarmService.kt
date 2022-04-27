@@ -13,23 +13,20 @@ import android.util.Log
 // Notification에서 Intent 들어오면 종료
 class AlarmService : Service() {
 
-    private var ringtone: Ringtone? = null
     private var mediaPlayer: MediaPlayer? = null
 
-    var uri: String = ""
-    var volume: Int = 100
-    var repeatTimes: Int = 3
-    var interval: Int = 5
+    private var uri: String = ""
+    private var volume: Int = 100
+    private var repeatTimes: Int = 3
+    private var interval: Int = 5
 
     lateinit var audioManager: AudioManager
-    var savedVolume: Int = 0
-    var savedRingerMode: Int = 0
+    private var savedVolume: Int = 0
+    private var savedRingerMode: Int = 0
 
     override fun onCreate() {
         super.onCreate()
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
-        //startForeground(1000, notification)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -107,7 +104,10 @@ class AlarmService : Service() {
         savedRingerMode = audioManager.ringerMode
         savedVolume = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)
 
-        Log.d(TAG, "changeAudioState: SavedVolume: $savedVolume MaxVolume: ${audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)} CurrentVolume: ${(audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) * (volume / 100.0)).toInt()}")
+        Log.d(TAG, "changeAudioState: " +
+                "SavedVolume: $savedVolume " +
+                "MaxVolume: ${audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)} " +
+                "CurrentVolume: ${(audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) * (volume / 100.0)).toInt()}")
 
         audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
         audioManager.setStreamVolume(

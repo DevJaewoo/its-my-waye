@@ -13,12 +13,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder>() {
 
-    var dataSet: List<Item> = ArrayList()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var id: Int
         val name: TextView
@@ -57,8 +51,8 @@ class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.onBind(dataSet[position])
+        viewHolder.onBind(ApplicationManager.ItemList[position])
     }
 
-    override fun getItemCount(): Int = dataSet.size
+    override fun getItemCount(): Int = ApplicationManager.ItemList.size
 }

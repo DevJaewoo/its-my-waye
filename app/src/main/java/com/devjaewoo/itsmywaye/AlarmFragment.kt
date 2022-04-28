@@ -29,7 +29,7 @@ class AlarmFragment : Fragment() {
         mContext = context
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "onCreateView: ")
         
         _binding = FragmentAlarmBinding.inflate(inflater, container, false)
@@ -39,8 +39,6 @@ class AlarmFragment : Fragment() {
 
         alarmRecyclerView.adapter = alarmRecyclerAdapter
         alarmRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-
-        alarmRecyclerAdapter.dataSet = ApplicationManager.ItemList
 
         updateAlarmEnabled(ApplicationManager.isAlarmEnabled)
         updateAlarmOfftimeStart(ApplicationManager.alarmOffTimeStart)

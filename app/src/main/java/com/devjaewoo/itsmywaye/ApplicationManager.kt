@@ -78,7 +78,7 @@ class ApplicationManager : Application() {
         Log.d(TAG, "loadPreferences: \n" +
                 "AlarmEnabled: $isAlarmEnabled\n" +
                 "AlarmOffTimeStart: $alarmOffTimeStart\n" +
-                "AlarmOffTimeEnd: $alarmOffTimeEnd" +
+                "AlarmOffTimeEnd: $alarmOffTimeEnd\n" +
                 "AllNotificationAllowed: $isAllNotificationAllowed\n" +
                 "DiscordNotificationAllowed: $isDiscordNotificationAllowed\n" +
                 "KakaotalkNotificationAllowed: $isKakaotalkNotificationAllowed\n")

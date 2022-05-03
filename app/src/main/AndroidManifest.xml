@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ItsMyWaye">
         <activity
+            android:name=".AlarmEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".PermissionActivity"
             android:exported="true">
             <intent-filter>

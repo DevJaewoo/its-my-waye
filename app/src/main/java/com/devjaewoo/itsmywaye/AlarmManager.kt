@@ -62,7 +62,7 @@ object AlarmManager {
         Log.d(TAG, "startAlarm: Alarm Enabled: ${item.enabled}")
         if(!item.enabled) return
 
-        val alarm = item.alarm ?: Alarm(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString(), 100, 3, 5)
+        val alarm = item.alarm ?: Alarm(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString(), 100, 3, 5, 0, 0)
 
         val alarmIntent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
             action = ACTION_ALARM_ON

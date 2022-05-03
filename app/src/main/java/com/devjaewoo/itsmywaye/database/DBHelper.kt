@@ -52,6 +52,11 @@ class DBHelper(val context: Context)
                     put(Item.TableInfo.COLUMN_NAME_FK_ITEM_ALARM, "NULL")
                 })
             }
+
+            2 -> { //Alarm에 OffTime 추가
+                db?.execSQL("ALTER TABLE ALARM ADD COLUMN ${Alarm.TableInfo.COLUMN_NAME_OFFTIME_START} INTEGER DEFAULT 0") //ALTER TABLE은 NOT NULL 컬럼 추가가 안된다고 함
+                db?.execSQL("ALTER TABLE ALARM ADD COLUMN ${Alarm.TableInfo.COLUMN_NAME_OFFTIME_END} INTEGER DEFAULT 0")
+            }
         }
     }
 

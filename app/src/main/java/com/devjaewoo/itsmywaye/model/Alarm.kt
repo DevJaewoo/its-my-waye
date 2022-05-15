@@ -9,10 +9,12 @@ class Alarm {
     var id: Int = -1
     var filePath: String = ""
     var volume: Int = 100
-    var repeatTimes: Int = 3 //반복 횟수
-    var interval: Int = 5 //알림이 한번 종료된 후 다음 반복까지의 시간(분), 0: 계속 반복
-    var offTimeStart: Int = 0
-    var offTimeEnd: Int = 0
+    var repeatTimes: Int = -1 //반복 횟수
+    var interval: Int = 0 //알림이 한번 종료된 후 다음 반복까지의 시간(분), 0: 계속 반복
+    var offTimeStart: Int = -1
+    var offTimeEnd: Int = -1
+
+    constructor()
 
     constructor(filePath: String, volume: Int, repeatTimes: Int, interval: Int, offTimeStart: Int, offTimeEnd: Int) {
         this.filePath = filePath
@@ -26,6 +28,16 @@ class Alarm {
     constructor(id: Int, filePath: String, volume: Int, repeatTimes: Int, interval: Int, offTimeStart: Int, offTimeEnd: Int)
             : this(filePath, volume, repeatTimes, interval, offTimeStart, offTimeEnd) {
         this.id = id
+    }
+
+    constructor(alarm: Alarm) {
+        this.id = alarm.id
+        this.filePath = alarm.filePath
+        this.volume = alarm.volume
+        this.repeatTimes = alarm.repeatTimes
+        this.interval = alarm.interval
+        this.offTimeStart = alarm.offTimeStart
+        this.offTimeEnd = alarm.offTimeEnd
     }
 
     constructor(cursor: Cursor) {

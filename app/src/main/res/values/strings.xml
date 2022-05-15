@@ -15,4 +15,5 @@
     <string name="imageView_contentDescription">ImageView</string>
     <string name="tv_permission_description_notification">마이웨이 앱은 다른 앱의 알림을 읽어 동작하기 때문에 알림 액세스 권한이 필요합니다.</string>
     <string name="tv_permission_description_write_settings">마이웨이 앱이 알람을 켤 때 볼륨을 조절하기 위해 시스템 설정 수정 권한이 필요합니다.</string>
+    <string name="btn_alarm_edit_confirm">확인</string>
 </resources>

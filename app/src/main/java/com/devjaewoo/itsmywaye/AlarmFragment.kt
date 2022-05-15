@@ -1,6 +1,7 @@
 package com.devjaewoo.itsmywaye
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,7 +11,9 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.databinding.FragmentAlarmBinding
+import com.devjaewoo.itsmywaye.model.Alarm
 import java.lang.NumberFormatException
 
 
@@ -24,6 +27,26 @@ class AlarmFragment : Fragment() {
     lateinit var alarmRecyclerView: RecyclerView
     lateinit var alarmRecyclerAdapter: AlarmRecyclerAdapter
 
+    private val alarmListener = object : AlarmListener {
+
+        override fun onAlarmChanged(id: Int, enabled: Boolean) {
+            if(ApplicationManager.ItemList[id - 1].enabled != enabled) {
+                ApplicationManager.ItemList[id - 1].enabled = enabled
+                ItemDAO(mContext).update(ApplicationManager.ItemList[id - 1])
+            }
+        }
+
+        override fun onAlarmEdit(id: Int) {
+            val intent = Intent(mContext, AlarmEditActivity::class.java).apply {
+                val index = ApplicationManager.ItemList.indexOfFirst { it.id == id }
+                putExtra(EXTRA_ITEM_INDEX, index)
+            }
+
+            startActivity(intent)
+        }
+
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -35,7 +58,7 @@ class AlarmFragment : Fragment() {
         _binding = FragmentAlarmBinding.inflate(inflater, container, false)
 
         alarmRecyclerView = binding.recyclerviewAlarm
-        alarmRecyclerAdapter = AlarmRecyclerAdapter()
+        alarmRecyclerAdapter = AlarmRecyclerAdapter(alarmListener)
 
         alarmRecyclerView.adapter = alarmRecyclerAdapter
         alarmRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)

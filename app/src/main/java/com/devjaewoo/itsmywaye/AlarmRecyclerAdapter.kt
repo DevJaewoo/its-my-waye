@@ -11,7 +11,13 @@ import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.model.Item
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder>() {
+interface AlarmListener {
+    fun onAlarmChanged(id: Int, enabled: Boolean)
+    fun onAlarmEdit(id: Int)
+}
+
+class AlarmRecyclerAdapter(private val listener: AlarmListener):
+    RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var id: Int
@@ -24,21 +30,20 @@ class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder
             name = view.findViewById(R.id.tv_alarm_name)
             enable = view.findViewById(R.id.switch_alarm_enable)
             setting = view.findViewById(R.id.ib_alarm_setting)
-
-            view.findViewById<SwitchMaterial>(R.id.switch_alarm_enable).setOnCheckedChangeListener { _, isChecked ->
-                Log.d(TAG, "onCheckedChangeListener[$id]: $isChecked")
-
-                if(ApplicationManager.ItemList[id - 1].enabled != isChecked) {
-                    ApplicationManager.ItemList[id - 1].enabled = isChecked
-                    ItemDAO(view.context).update(ApplicationManager.ItemList[id - 1])
-                }
-            }
         }
 
-        fun onBind(item: Item) {
+        fun onBind(item: Item, listener: AlarmListener) {
             id = item.id
             name.text = item.name
             enable.isChecked = item.enabled
+
+            enable.setOnCheckedChangeListener { _, isChecked ->
+                listener.onAlarmChanged(id, isChecked)
+            }
+
+            setting.setOnClickListener {
+                listener.onAlarmEdit(id)
+            }
         }
     }
 
@@ -51,7 +56,7 @@ class AlarmRecyclerAdapter: RecyclerView.Adapter<AlarmRecyclerAdapter.ViewHolder
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.onBind(ApplicationManager.ItemList[position])
+        viewHolder.onBind(ApplicationManager.ItemList[position], listener)
     }
 
     override fun getItemCount(): Int = ApplicationManager.ItemList.size

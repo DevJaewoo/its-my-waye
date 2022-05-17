@@ -11,6 +11,10 @@ import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
 import java.io.IOException
 
+// Database
+const val DATABASE_NAME: String = "itsmywaye.db"
+const val DATABASE_VERSION: Int = 4
+
 class DBHelper(val context: Context)
     : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -56,6 +60,13 @@ class DBHelper(val context: Context)
             2 -> { //Alarm에 OffTime 추가
                 db?.execSQL("ALTER TABLE ALARM ADD COLUMN ${Alarm.TableInfo.COLUMN_NAME_OFFTIME_START} INTEGER DEFAULT 0") //ALTER TABLE은 NOT NULL 컬럼 추가가 안된다고 함
                 db?.execSQL("ALTER TABLE ALARM ADD COLUMN ${Alarm.TableInfo.COLUMN_NAME_OFFTIME_END} INTEGER DEFAULT 0")
+            }
+
+            3 -> { //RepeatTimes를 Vibrate로, Interval을 Fullscreen으로 변경
+//                db?.execSQL("ALTER TABLE ALARM RENAME COLUMN RepeatTimes TO ${Alarm.TableInfo.COLUMN_NAME_VIBRATE}")
+//                db?.execSQL("ALTER TABLE ALARM RENAME COLUMN Interval TO ${Alarm.TableInfo.COLUMN_NAME_FULLSCREEN}")
+                db?.execSQL(Alarm.SQL_DROP_TABLE)
+                db?.execSQL(Alarm.SQL_CREATE_TABLE)
             }
         }
     }

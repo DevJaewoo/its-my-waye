@@ -2,7 +2,7 @@ package com.devjaewoo.itsmywaye.dao
 
 import android.provider.BaseColumns
 import androidx.test.platform.app.InstrumentationRegistry
-import com.devjaewoo.itsmywaye.DATABASE_NAME
+import com.devjaewoo.itsmywaye.database.DATABASE_NAME
 import com.devjaewoo.itsmywaye.model.Alarm
 import com.devjaewoo.itsmywaye.model.Item
 import org.junit.Assert.*
@@ -30,7 +30,7 @@ class ItemDAOTest {
 
     @Test
     fun testInsertSelect() {
-        val alarm = Alarm("Test", 1, 2, 3)
+        val alarm = Alarm("Test", 1, false, false, 2, 3)
         val alarmID = alarmDAO.insert(alarm)
         alarm.id = alarmID
 
@@ -51,8 +51,8 @@ class ItemDAOTest {
             assertNotNull(it?.alarm)
             assertEquals(alarm.filePath, it?.alarm!!.filePath)
             assertEquals(alarm.volume, it.alarm!!.volume)
-            assertEquals(alarm.repeatTimes, it.alarm!!.repeatTimes)
-            assertEquals(alarm.interval, it.alarm!!.interval)
+            assertEquals(alarm.vibrate, it.alarm!!.vibrate)
+            assertEquals(alarm.fullscreen, it.alarm!!.fullscreen)
         }
 
         itemDAO.select("${BaseColumns._ID} = 2").also {
@@ -76,7 +76,7 @@ class ItemDAOTest {
         itemDAO.insert(item)
 
         var result = itemDAO.select("${BaseColumns._ID} = 1")
-        val alarm = Alarm("Test", 1, 2, 3)
+        val alarm = Alarm("Test", 1, false, false, 2, 3)
         val alarmID = alarmDAO.insert(alarm)
         alarm.id = alarmID
 
@@ -98,8 +98,8 @@ class ItemDAOTest {
         assertNotNull(result?.alarm)
         assertEquals(alarm.filePath, result?.alarm!!.filePath)
         assertEquals(alarm.volume, result?.alarm!!.volume)
-        assertEquals(alarm.repeatTimes, result?.alarm!!.repeatTimes)
-        assertEquals(alarm.interval, result?.alarm!!.interval)
+        assertEquals(alarm.vibrate, result?.alarm!!.vibrate)
+        assertEquals(alarm.fullscreen, result?.alarm!!.fullscreen)
     }
 
     @Test
@@ -129,7 +129,7 @@ class ItemDAOTest {
 
     @Test
     fun testDelete_AlarmDelete() {
-        val alarm = Alarm("Test", 1, 2, 3)
+        val alarm = Alarm("Test", 1, false, false, 2, 3)
         val alarmID = alarmDAO.insert(alarm)
         alarm.id = alarmID
 

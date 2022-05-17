@@ -23,10 +23,6 @@ const val PREFERENCE_NOTIFICATION_ALLOW_ALL = "notification_allow_all"
 const val PREFERENCE_NOTIFICATION_ALLOW_DISCORD = "notification_allow_discord"
 const val PREFERENCE_NOTIFICATION_ALLOW_KAKAOTALK = "notification_allow_kakaotalk"
 
-// Database
-const val DATABASE_NAME: String = "itsmywaye.db"
-const val DATABASE_VERSION: Int = 3
-
 // Notification Read
 const val PACKAGE_NAME_DISCORD: String = "com.discord"
 const val PACKAGE_NAME_KAKAOTALK: String = "com.kakao.talk"

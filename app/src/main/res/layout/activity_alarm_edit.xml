@@ -143,7 +143,7 @@
                             android:id="@+id/tv_alarm_edit_alarm_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Homecoming"
+                            android:text="없음"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -175,31 +175,25 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
                     <LinearLayout
-                        android:id="@+id/layout_alarm_edit_alarm_repeat"
+                        android:id="@+id/layout_alarm_edit_alarm_vibrate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/switch_alarm_edit_repeat"
+                        app:layout_constraintEnd_toStartOf="@+id/switch_alarm_edit_vibrate"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="반복"
+                            android:text="진동"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/tv_alarm_edit_alarm_repeat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="계속 반복"
-                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_alarm_edit_repeat"
+                        android:id="@+id/switch_alarm_edit_vibrate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"

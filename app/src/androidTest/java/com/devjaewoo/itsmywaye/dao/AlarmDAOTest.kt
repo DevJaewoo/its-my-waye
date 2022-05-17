@@ -2,7 +2,7 @@ package com.devjaewoo.itsmywaye.dao
 
 import android.provider.BaseColumns
 import androidx.test.platform.app.InstrumentationRegistry
-import com.devjaewoo.itsmywaye.DATABASE_NAME
+import com.devjaewoo.itsmywaye.database.DATABASE_NAME
 import com.devjaewoo.itsmywaye.model.Alarm
 import org.junit.Assert.*
 
@@ -27,9 +27,9 @@ class AlarmDAOTest {
 
     @Test
     fun testInsert() {
-        val alarm1 = Alarm("ABC", 0, 0, 0)
-        val alarm2 = Alarm("DEF", 1, 1, 1)
-        val alarm3 = Alarm("GHI", 2, 2, 2)
+        val alarm1 = Alarm("ABC", 0, false, false, 0, 0)
+        val alarm2 = Alarm("DEF", 1, false, false, 1, 1)
+        val alarm3 = Alarm("GHI", 2, false, false, 2, 2)
 
         val row1 = alarmDAO.insert(alarm1)
         val row2 = alarmDAO.insert(alarm2)
@@ -42,28 +42,28 @@ class AlarmDAOTest {
         alarmDAO.select("${BaseColumns._ID} = 1").also {
             assertEquals(alarm1.filePath, it?.filePath)
             assertEquals(alarm1.volume, it?.volume)
-            assertEquals(alarm1.repeatTimes, it?.repeatTimes)
-            assertEquals(alarm1.interval, it?.interval)
+            assertEquals(alarm1.vibrate, it?.vibrate)
+            assertEquals(alarm1.fullscreen, it?.fullscreen)
         }
 
         alarmDAO.select("${BaseColumns._ID} = 2").also {
             assertEquals(alarm2.filePath, it?.filePath)
             assertEquals(alarm2.volume, it?.volume)
-            assertEquals(alarm2.repeatTimes, it?.repeatTimes)
-            assertEquals(alarm2.interval, it?.interval)
+            assertEquals(alarm2.vibrate, it?.vibrate)
+            assertEquals(alarm2.fullscreen, it?.fullscreen)
         }
 
         alarmDAO.select("${BaseColumns._ID} = 3").also {
             assertEquals(alarm3.filePath, it?.filePath)
             assertEquals(alarm3.volume, it?.volume)
-            assertEquals(alarm3.repeatTimes, it?.repeatTimes)
-            assertEquals(alarm3.interval, it?.interval)
+            assertEquals(alarm3.vibrate, it?.vibrate)
+            assertEquals(alarm3.fullscreen, it?.fullscreen)
         }
     }
 
     @Test
     fun testUpdate() {
-        val alarm = Alarm("ABC", 0, 0, 0)
+        val alarm = Alarm("ABC", 0, false, false, 0, 0)
         alarmDAO.insert(alarm)
 
         var result = alarmDAO.select("${BaseColumns._ID} = 1")
@@ -71,8 +71,8 @@ class AlarmDAOTest {
 
         result?.filePath = "DEF"
         result?.volume = 100
-        result?.repeatTimes = 20
-        result?.interval = 5
+        result?.vibrate = true
+        result?.fullscreen = true
 
         alarmDAO.update(result!!)
 
@@ -82,15 +82,15 @@ class AlarmDAOTest {
 
         assertEquals("DEF", result?.filePath)
         assertEquals(100, result?.volume)
-        assertEquals(20, result?.repeatTimes)
-        assertEquals(5, result?.interval)
+        assertEquals(20, result?.vibrate)
+        assertEquals(5, result?.fullscreen)
     }
 
     @Test
     fun testDeleteSelectAll() {
-        val alarm1 = Alarm("ABC", 0, 0, 0)
-        val alarm2 = Alarm("DEF", 1, 1, 1)
-        val alarm3 = Alarm("GHI", 2, 2, 2)
+        val alarm1 = Alarm("ABC", 0, false, false, 0, 0)
+        val alarm2 = Alarm("DEF", 1, false, false, 1, 1)
+        val alarm3 = Alarm("GHI", 2, false, false, 2, 2)
 
         alarmDAO.insert(alarm1)
         alarmDAO.insert(alarm2)
@@ -111,10 +111,10 @@ class AlarmDAOTest {
         assertEquals(alarm1.volume, alarms[0].volume)
         assertEquals(alarm3.volume, alarms[1].volume)
 
-        assertEquals(alarm1.repeatTimes, alarms[0].repeatTimes)
-        assertEquals(alarm3.repeatTimes, alarms[1].repeatTimes)
+        assertEquals(alarm1.vibrate, alarms[0].vibrate)
+        assertEquals(alarm3.vibrate, alarms[1].vibrate)
 
-        assertEquals(alarm1.interval, alarms[0].interval)
-        assertEquals(alarm3.interval, alarms[1].interval)
+        assertEquals(alarm1.fullscreen, alarms[0].fullscreen)
+        assertEquals(alarm3.fullscreen, alarms[1].fullscreen)
     }
 }

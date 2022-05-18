@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.devjaewoo.itsmywaye.dao.AlarmDAO
+import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.databinding.ActivityAlarmEditBinding
 import com.devjaewoo.itsmywaye.model.Alarm
 
@@ -57,7 +59,16 @@ class AlarmEditActivity : AppCompatActivity() {
             currentAlarm.fullscreen = binding.switchAlarmEditAlarmFullscreen.isChecked
 
             //DAO에 넣어주기
+            if(currentAlarm.id == -1) { //ID가 없는 경우(새로 생성): Insert
+                currentAlarm.id = AlarmDAO(this).insert(currentAlarm)
+            }
+            else {
+                AlarmDAO(this).update(currentAlarm)
+            }
+
             ApplicationManager.ItemList[currentIndex].alarm = currentAlarm
+            ItemDAO(this).update(ApplicationManager.ItemList[currentIndex])
+
             finish()
         }
 
@@ -77,7 +88,8 @@ class AlarmEditActivity : AppCompatActivity() {
         }
 
         if(currentAlarm.offTimeStart != -1 && currentAlarm.offTimeEnd != -1) { //이전에 알람 방해금지 시간을 켜놓은 상태
-            binding.switchAlarmEditOfftime.visibility = View.VISIBLE
+            binding.switchAlarmEditOfftime.isChecked = true
+            binding.layoutAlarmEditOfftime.visibility = View.VISIBLE
             binding.npAlarmEditOfftimeStart.value = currentAlarm.offTimeStart
             binding.npAlarmEditOfftimeEnd.value = currentAlarm.offTimeEnd
         }

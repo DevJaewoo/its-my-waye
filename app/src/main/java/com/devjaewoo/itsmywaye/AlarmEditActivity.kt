@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import com.devjaewoo.itsmywaye.dao.AlarmDAO
 import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.databinding.ActivityAlarmEditBinding
@@ -38,6 +39,11 @@ class AlarmEditActivity : AppCompatActivity() {
         }
 
         initializeComponents()
+
+        binding.toolbar.ibToolbar.setOnClickListener {
+            finish()
+            return@setOnClickListener
+        }
 
         binding.switchAlarmEditOfftime.setOnCheckedChangeListener { _, status ->
             binding.layoutAlarmEditOfftime.visibility = if(status) View.VISIBLE else View.GONE
@@ -76,6 +82,10 @@ class AlarmEditActivity : AppCompatActivity() {
     }
 
     private fun initializeComponents() {
+
+        binding.toolbar.ibToolbar.setImageResource(R.drawable.ic_baseline_chevron_left_24)
+        binding.toolbar.ibToolbar.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.toolbar.tvToolbar.text = ApplicationManager.ItemList[currentIndex].name
 
         binding.npAlarmEditOfftimeStart.apply {
             minValue = 0

@@ -53,68 +53,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/alarm_offtime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:text="@string/alarm_disturb_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/editAlarmOfftimeStart"
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:minHeight="48dp"
-                    android:text="0"
-                    android:hint="0"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/text"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:text="~"
-                    android:textSize="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/editAlarmOfftimeEnd"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/editAlarmOfftimeEnd"
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:minHeight="48dp"
-                    android:text="0"
-                    android:hint="0"
-                    android:layout_marginEnd="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"

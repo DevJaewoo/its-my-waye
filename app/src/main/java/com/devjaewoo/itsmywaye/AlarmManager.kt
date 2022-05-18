@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.devjaewoo.itsmywaye.model.Alarm
+import com.devjaewoo.itsmywaye.model.Item
 import java.util.*
 
 object AlarmManager {
@@ -33,11 +34,13 @@ object AlarmManager {
     }
 
     //현재 알람 금지 시간대인지 판별
-    fun isAlarmEnabled(hour: Int): Boolean {
+    fun isAlarmEnabled(item: Item, hour: Int): Boolean {
         if(!ApplicationManager.isAlarmEnabled) return false
+        if(!item.enabled) return false
+        if(item.alarm == null) return true //알람 정보가 없을 경우 기본 알람 울림
 
-        val alarmOffTimeStart = ApplicationManager.alarmOffTimeStart
-        var alarmOffTimeEnd = ApplicationManager.alarmOffTimeEnd
+        val alarmOffTimeStart = item.alarm!!.offTimeStart
+        var alarmOffTimeEnd = item.alarm!!.offTimeStart
         var currentTime = hour
 
         if(alarmOffTimeStart > alarmOffTimeEnd) alarmOffTimeEnd += 24
@@ -48,19 +51,18 @@ object AlarmManager {
 
     fun startAlarm(message: String) {
 
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        if(!isAlarmEnabled(currentHour)) {
-            Log.d(TAG, "startAlarm: Alarm is disabled at $currentHour.")
-            return
-        }
-
         val itemIndex = getItemIndex(message)
         Log.d(TAG, "startAlarm: Item index of $message is $itemIndex")
         if(itemIndex == -1) return
 
         val item = ApplicationManager.ItemList[itemIndex]
         Log.d(TAG, "startAlarm: Alarm Enabled: ${item.enabled}")
-        if(!item.enabled) return
+
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        if(!isAlarmEnabled(item, currentHour)) {
+            Log.d(TAG, "startAlarm: Alarm is disabled at $currentHour.")
+            return
+        }
 
         val alarm = item.alarm ?: Alarm(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString(), 100,
             vibrate = false,

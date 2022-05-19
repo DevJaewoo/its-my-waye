@@ -17,8 +17,6 @@ const val RESULT_CLOSE: Int = 99
 const val PREFERENCE_NAME: String = "ItsMyWaye"
 
 const val PREFERENCE_ALARM_ENABLED = "alarm_enabled"
-const val PREFERENCE_ALARM_OFFTIME_START = "alarm_offtime_start"
-const val PREFERENCE_ALARM_OFFTIME_END = "alarm_offtime_end"
 const val PREFERENCE_NOTIFICATION_ALLOW_ALL = "notification_allow_all"
 const val PREFERENCE_NOTIFICATION_ALLOW_DISCORD = "notification_allow_discord"
 const val PREFERENCE_NOTIFICATION_ALLOW_KAKAOTALK = "notification_allow_kakaotalk"
@@ -43,3 +41,8 @@ const val EXTRA_ALARM_URI: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_U
 const val EXTRA_ALARM_VOLUME: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_VOLUME"
 const val EXTRA_ALARM_REPEAT: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_REPEAT"
 const val EXTRA_ALARM_INTERVAL: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_INTERVAL"
+
+
+const val EXTRA_RINGTONE_NAME: String = "com.devjaewoo.itsmywaye.extra.EXTRA_RINGTONE_NAME"
+const val EXTRA_RINGTONE_URI: String = "com.devjaewoo.itsmywaye.extra.EXTRA_RINGTONE_URI"
+const val EXTRA_RINGTONE_VOLUME: String = "com.devjaewoo.itsmywaye.extra.EXTRA_RINGTONE_VOLUME"

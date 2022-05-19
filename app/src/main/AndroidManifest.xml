@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ItsMyWaye">
         <activity
+            android:name=".RingtoneSelectActivity"
+            android:exported="false" />
+        <activity
             android:name=".AlarmEditActivity"
             android:exported="false" />
         <activity
@@ -43,8 +46,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

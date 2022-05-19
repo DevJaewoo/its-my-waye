@@ -1,5 +1,6 @@
 package com.devjaewoo.itsmywaye
 
+import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import com.devjaewoo.itsmywaye.dao.AlarmDAO
 import com.devjaewoo.itsmywaye.dao.ItemDAO
 import com.devjaewoo.itsmywaye.databinding.ActivityAlarmEditBinding
@@ -20,6 +22,18 @@ class AlarmEditActivity : AppCompatActivity() {
 
     private lateinit var currentAlarm: Alarm
     private var currentIndex: Int = 0
+
+    private val activityResultCallback = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val name = result.data?.getStringExtra(EXTRA_RINGTONE_NAME)
+        val uri = result.data?.getStringExtra(EXTRA_RINGTONE_URI)
+        val volume = result.data?.getIntExtra(EXTRA_RINGTONE_VOLUME, currentAlarm.volume)
+        
+        if(uri != null) currentAlarm.filePath = "${currentAlarm.filePath.substring(0, 2)}$uri"
+        if(name != null) binding.tvAlarmEditAlarmName.text = name
+        if(volume != null) currentAlarm.volume = volume
+
+        Log.d(TAG, "resultCallback: name: $name uri: $uri volume: $volume")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +61,15 @@ class AlarmEditActivity : AppCompatActivity() {
 
         binding.switchAlarmEditOfftime.setOnCheckedChangeListener { _, status ->
             binding.layoutAlarmEditOfftime.visibility = if(status) View.VISIBLE else View.GONE
+        }
+
+        binding.layoutAlarmEditAlarmName.setOnClickListener {
+            val intent = Intent(this, RingtoneSelectActivity::class.java).apply {
+                putExtra(EXTRA_RINGTONE_NAME, binding.tvAlarmEditAlarmName.text)
+                putExtra(EXTRA_RINGTONE_VOLUME, currentAlarm.volume)
+            }
+
+            activityResultCallback.launch(intent)
         }
 
         binding.btnAlarmEditConfirm.setOnClickListener {

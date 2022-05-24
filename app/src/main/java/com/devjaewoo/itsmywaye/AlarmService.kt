@@ -6,19 +6,21 @@ import android.content.Context
 import android.content.Intent
 import android.media.*
 import android.net.Uri
+import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
+import com.devjaewoo.itsmywaye.model.Alarm
 
 // 여기서 on off on off 다 정해놓고 그대로 알람 틀다가
 // Notification에서 Intent 들어오면 종료
 class AlarmService : Service() {
 
     private var mediaPlayer: MediaPlayer? = null
+    private var vibrator: Vibrator? = null
 
-    private var uri: String = ""
-    private var volume: Int = 100
-    private var repeatTimes: Int = 3
-    private var interval: Int = 5
+    private lateinit var alarm: Alarm
 
     lateinit var audioManager: AudioManager
     private var savedVolume: Int = 0
@@ -37,28 +39,37 @@ class AlarmService : Service() {
 
         if(intent != null) {
             if(intent.action == ACTION_ALARM_ON) {
-                uri = intent.getStringExtra(EXTRA_ALARM_URI) ?: ""
-                volume = intent.getIntExtra(EXTRA_ALARM_VOLUME, 100)
-                repeatTimes = intent.getIntExtra(EXTRA_ALARM_REPEAT, 3)
-                interval = intent.getIntExtra(EXTRA_ALARM_INTERVAL, 5)
+                alarm = Alarm().apply {
+                    filePath = intent.getStringExtra(EXTRA_ALARM_URI) ?: ""
+                    volume = intent.getIntExtra(EXTRA_ALARM_VOLUME, 0)
+                    vibrate = intent.getBooleanExtra(EXTRA_ALARM_VIBRATE, true)
+                    fullscreen = intent.getBooleanExtra(EXTRA_ALARM_FULLSCREEN, false)
+                }
 
-                Log.d(TAG, "onStartCommand: Alarm Received: uri: $uri, volume: $volume, repeatTimes: $repeatTimes, interval: $interval")
+                if(RingtoneManager.getRingtone(applicationContext, Uri.parse(alarm.filePath)) == null) {
+                    Log.w(TAG, "onStartCommand: Cannot find ringtone at ${alarm.filePath}. Setting uri to default alarm ringtone.")
+                    alarm.filePath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString()
+                }
 
-                if (mediaPlayer == null || !(mediaPlayer!!.isPlaying)) {
-                    if(RingtoneManager.getRingtone(applicationContext, Uri.parse(uri)) == null) {
-                        Log.w(TAG, "onStartCommand: Cannot find ringtone at $uri. Setting uri to default alarm ringtone.")
-                        uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString()
-                    }
+                Log.d(TAG, alarm.toString())
 
-                    mediaPlayer = MediaPlayer.create(this, Uri.parse(uri)).apply {
+                if(alarm.volume > 0) {
+                    mediaPlayer = MediaPlayer.create(this, Uri.parse(alarm.filePath)).apply {
                         stop()
                         isLooping = true
-                        setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build()) //알람 볼륨으로 소리 켬
+                        setAudioAttributes(
+                            AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                .build()
+                        ) //알람 볼륨으로 소리 켬
                         prepare()
                     }
-
-                    playRingtone()
                 }
+
+                if(alarm.vibrate) {
+                    vibrator = getSystemService(Vibrator::class.java)
+                }
+
+                playRingtone()
             }
             else {
                 val notificationID: Int = intent.getIntExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_DEFAULT_ID)
@@ -77,23 +88,42 @@ class AlarmService : Service() {
 
     private fun playRingtone() {
         Log.d(TAG, "playRingtone: ")
-        if(mediaPlayer?.isPlaying == false) {
-            changeAudioState(volume)
-            mediaPlayer?.start()
+        if(alarm.volume > 0) {
+            if (mediaPlayer?.isPlaying == false) {
+                changeAudioState(alarm.volume)
+                mediaPlayer?.start()
+            } else {
+                Log.d(TAG, "playRingtone: Alarm is already playing")
+            }
         }
-        else {
-            Log.d(TAG, "playRingtone: Alarm is already playing")
+
+        if(alarm.vibrate) {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                vibrator?.vibrate(longArrayOf(1000, 500), 0)
+            }
+            else {
+                vibrator?.vibrate(
+                    VibrationEffect.createWaveform(
+                    longArrayOf(1000, 500),
+                    intArrayOf(255, 0),
+                    0))
+            }
         }
     }
 
     private fun stopRingtone() {
         Log.d(TAG, "stopRingtone: ")
-        if(mediaPlayer?.isPlaying == true) {
-            mediaPlayer?.stop()
-            restoreAudioState()
+        if(alarm.volume > 0) {
+            if (mediaPlayer?.isPlaying == true) {
+                mediaPlayer?.stop()
+                restoreAudioState()
+            } else {
+                Log.d(TAG, "stopRingtone: Alarm is not playing")
+            }
         }
-        else {
-            Log.d(TAG, "stopRingtone: Alarm is not playing")
+
+        if(alarm.vibrate) {
+            vibrator?.cancel()
         }
     }
 

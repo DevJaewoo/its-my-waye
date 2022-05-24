@@ -64,19 +64,14 @@ object AlarmManager {
             return
         }
 
-        val alarm = item.alarm ?: Alarm(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString(), 100,
-            vibrate = false,
-            fullscreen = false,
-            offTimeStart = 0,
-            offTimeEnd = 0
-        )
+        val alarm = Alarm(item.alarm ?: Alarm("0|null", 0, vibrate = true, fullscreen = false, 0, 0))
 
         val alarmIntent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
             action = ACTION_ALARM_ON
-            putExtra(EXTRA_ALARM_URI, alarm.filePath)
-            putExtra(EXTRA_ALARM_VOLUME, alarm.volume)
-            putExtra(EXTRA_ALARM_REPEAT, alarm.vibrate)
-            putExtra(EXTRA_ALARM_INTERVAL, alarm.fullscreen)
+            putExtra(EXTRA_ALARM_URI, alarm.filePath.substring(2))
+            putExtra(EXTRA_ALARM_VOLUME, if(alarm.filePath.startsWith('1')) alarm.volume else 0) //볼륨이 0일경우 알람 울리지 않음
+            putExtra(EXTRA_ALARM_VIBRATE, alarm.vibrate)
+            putExtra(EXTRA_ALARM_FULLSCREEN, alarm.fullscreen)
         }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -40,7 +40,7 @@ object AlarmManager {
         if(item.alarm == null) return true //알람 정보가 없을 경우 기본 알람 울림
 
         val alarmOffTimeStart = item.alarm!!.offTimeStart
-        var alarmOffTimeEnd = item.alarm!!.offTimeStart
+        var alarmOffTimeEnd = item.alarm!!.offTimeEnd
         var currentTime = hour
 
         if(alarmOffTimeStart > alarmOffTimeEnd) alarmOffTimeEnd += 24

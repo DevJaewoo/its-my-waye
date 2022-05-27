@@ -27,8 +27,12 @@ const val PACKAGE_NAME_KAKAOTALK: String = "com.kakao.talk"
 
 // Notification Write
 const val NOTIFICATION_DEFAULT_CHANNEL_ID: String = "default"
-const val NOTIFICATION_DEFAULT_CHANNEL_NAME: String = "default"
+const val NOTIFICATION_DEFAULT_CHANNEL_NAME: String = "기본 알림"
 const val NOTIFICATION_DEFAULT_ID: Int = 333333333  // Notification.IMPORTANCE_DEFAULT = 3
+
+const val NOTIFICATION_FULLSCREEN_CHANNEL_ID: String = "fullscreen"
+const val NOTIFICATION_FULLSCREEN_CHANNEL_NAME: String = "전체화면 알림"
+const val NOTIFICATION_FULLSCREEN_ID: Int = 4
 
 const val EXTRA_NOTIFICATION_ID: String = "com.devjaewoo.itsmywaye.extra.EXTRA_NOTIFICATION_ID"
 

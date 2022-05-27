@@ -4,7 +4,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -46,6 +45,8 @@ object AlarmManager {
         if(alarmOffTimeStart > alarmOffTimeEnd) alarmOffTimeEnd += 24
         if(alarmOffTimeStart > currentTime) currentTime += 24
 
+        Log.d(TAG, "isAlarmEnabled: CurrentTime: $currentTime Offtime: $alarmOffTimeStart ~ $alarmOffTimeEnd")
+
         return currentTime !in alarmOffTimeStart until alarmOffTimeEnd
     }
 
@@ -81,13 +82,18 @@ object AlarmManager {
             ApplicationManager.applicationContext.startService(alarmIntent)
         }
 
-        createNotification(item.name)
+        createNotification(item.name, alarm.fullscreen)
     }
 
-    private fun createNotification(content: String) {
+    private fun createNotification(content: String, fullscreen: Boolean) {
+
+        val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        Log.d(TAG, "createNotification: $APPLICATION_NAME/$content")
+
         val intent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
             action = ACTION_ALARM_OFF
-            putExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_DEFAULT_ID)
+            putExtra(EXTRA_NOTIFICATION_ID, if(!fullscreen) NOTIFICATION_DEFAULT_ID else NOTIFICATION_FULLSCREEN_ID)
         }
 
         val pendingIntent: PendingIntent = PendingIntent.getService(
@@ -96,17 +102,28 @@ object AlarmManager {
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
 
-        val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(ApplicationManager.applicationContext, NOTIFICATION_DEFAULT_CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(ApplicationManager.applicationContext, if(!fullscreen) NOTIFICATION_DEFAULT_CHANNEL_ID else NOTIFICATION_FULLSCREEN_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
             .setContentTitle("마이웨이")
             .setContentText(content)
             .addAction(R.drawable.ic_baseline_access_alarm_24, "알람 끄기", pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setOngoing(true)
-            .build()
 
-        Log.d(TAG, "createNotification: $APPLICATION_NAME/$content")
-        notificationManager.notify(NOTIFICATION_DEFAULT_ID, notification)
+        if (fullscreen) {
+            val fullscreenIntent = Intent(ApplicationManager.applicationContext, FullscreenAlarmActivity::class.java)
+            val fullscreenPendingIntent = PendingIntent.getActivity(ApplicationManager.applicationContext, 0, fullscreenIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+            notificationBuilder
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setFullScreenIntent(fullscreenPendingIntent, true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true)
+        }
+        else {
+            notificationBuilder
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setOngoing(true)
+        }
+
+        notificationManager.notify(NOTIFICATION_DEFAULT_ID, notificationBuilder.build())
     }
 }

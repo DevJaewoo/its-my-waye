@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.devjaewoo.itsmywaye.databinding.FragmentSettingsBinding
+import kotlin.coroutines.coroutineContext
 
 class SettingsFragment : Fragment() {
 
@@ -15,12 +16,15 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         binding.btnAlarmTest.setOnClickListener {
-            AlarmManager.startAlarm("웨이")
+            Thread {
+                Thread.sleep(3000)
+                AlarmManager.startAlarm("웨이")
+            }.run()
         }
 
         return binding.root

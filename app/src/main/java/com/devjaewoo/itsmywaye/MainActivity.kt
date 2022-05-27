@@ -112,8 +112,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = getSystemService(NotificationManager::class.java)
-            val notificationChannel = NotificationChannel(NOTIFICATION_DEFAULT_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
-            manager.createNotificationChannel(notificationChannel)
+
+            val defaultNotificationChannel = NotificationChannel(NOTIFICATION_DEFAULT_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+            manager.createNotificationChannel(defaultNotificationChannel)
+
+            val fullscreenNotificationChannel = NotificationChannel(NOTIFICATION_FULLSCREEN_CHANNEL_ID, NOTIFICATION_DEFAULT_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+            manager.createNotificationChannel(fullscreenNotificationChannel)
         }
     }
 }

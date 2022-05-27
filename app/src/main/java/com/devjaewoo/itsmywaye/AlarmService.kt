@@ -125,6 +125,9 @@ class AlarmService : Service() {
         if(alarm.vibrate) {
             vibrator?.cancel()
         }
+
+        val notificationManager = ApplicationManager.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
 

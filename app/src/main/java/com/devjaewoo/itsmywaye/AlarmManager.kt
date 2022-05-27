@@ -107,6 +107,7 @@ object AlarmManager {
             .setContentTitle("마이웨이")
             .setContentText(content)
             .addAction(R.drawable.ic_baseline_access_alarm_24, "알람 끄기", pendingIntent)
+            .setOngoing(true)
 
         if (fullscreen) {
             val fullscreenIntent = Intent(ApplicationManager.applicationContext, FullscreenAlarmActivity::class.java)
@@ -119,9 +120,7 @@ object AlarmManager {
                 .setAutoCancel(true)
         }
         else {
-            notificationBuilder
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setOngoing(true)
+            notificationBuilder.priority = NotificationCompat.PRIORITY_DEFAULT
         }
 
         notificationManager.notify(NOTIFICATION_DEFAULT_ID, notificationBuilder.build())

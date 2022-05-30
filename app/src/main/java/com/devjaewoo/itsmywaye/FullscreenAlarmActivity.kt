@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import com.devjaewoo.itsmywaye.databinding.ActivityFullscreenAlarmBinding
+import java.util.*
 
 class FullscreenAlarmActivity : AppCompatActivity() {
 
@@ -25,6 +26,14 @@ class FullscreenAlarmActivity : AppCompatActivity() {
         }
 
         binding.ivLogo.clipToOutline = true
+
+        binding.tvItemName.text = intent.getStringExtra(EXTRA_ALARM_CONTENT) ?: "알람"
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+09:00"), Locale.KOREA)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY).toString().padStart(2, '0')
+        val minute = calendar.get(Calendar.MINUTE).toString().padStart(2, '0')
+        val text = "010 $hour$minute ${hour}55"
+
+        binding.tvItemNumber.text = text
 
         binding.ibCallOk.setOnClickListener {
             finish()

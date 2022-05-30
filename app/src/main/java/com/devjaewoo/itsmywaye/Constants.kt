@@ -41,6 +41,7 @@ const val ACTION_ALARM_ON: String = "com.devjaewoo.itsmywaye.extra.ACTION_ALARM_
 const val ACTION_ALARM_OFF: String = "com.devjaewoo.itsmywaye.extra.ACTION_ALARM_OFF"
 
 const val EXTRA_ITEM_INDEX: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ITEM_INDEX"
+const val EXTRA_ALARM_CONTENT: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ITEM_NAME"
 const val EXTRA_ALARM_URI: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_URI"
 const val EXTRA_ALARM_VOLUME: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_VOLUME"
 const val EXTRA_ALARM_VIBRATE: String = "com.devjaewoo.itsmywaye.extra.EXTRA_ALARM_VIBRATE"

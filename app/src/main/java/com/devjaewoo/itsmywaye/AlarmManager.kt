@@ -110,7 +110,9 @@ object AlarmManager {
             .setOngoing(true)
 
         if (fullscreen) {
-            val fullscreenIntent = Intent(ApplicationManager.applicationContext, FullscreenAlarmActivity::class.java)
+            val fullscreenIntent = Intent(ApplicationManager.applicationContext, FullscreenAlarmActivity::class.java).apply {
+                putExtra(EXTRA_ALARM_CONTENT, content)
+            }
             val fullscreenPendingIntent = PendingIntent.getActivity(ApplicationManager.applicationContext, 0, fullscreenIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
             notificationBuilder

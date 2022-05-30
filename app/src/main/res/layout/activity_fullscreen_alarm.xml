@@ -4,15 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/image_call_background"
     tools:context=".FullscreenAlarmActivity">
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/tv_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="80dp"
+        android:text="Waye"
+        android:textColor="@color/white"
+        android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="010 0130 0155"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/circle"
+        android:backgroundTint="@color/lostark_gray"
+        android:contentDescription="@string/imageView_contentDescription"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_number"
+        app:srcCompat="@mipmap/ic_launcher_icon"
+        tools:ignore="ImageContrastCheck" />
+
+    <ImageButton
+        android:id="@+id/ib_call_ok"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/circle"
+        android:padding="18dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_call_24"
+        app:tint="#55B578"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="@string/imageView_contentDescription" />
+
+    <ImageButton
+        android:id="@+id/ib_call_cancel"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/circle"
+        android:padding="18dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_call_end_24"
+        app:tint="#E05149"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="@string/imageView_contentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

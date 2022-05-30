@@ -24,7 +24,13 @@ class FullscreenAlarmActivity : AppCompatActivity() {
             setTurnScreenOn(true)
         }
 
-        binding.button.setOnClickListener {
+        binding.ivLogo.clipToOutline = true
+
+        binding.ibCallOk.setOnClickListener {
+            finish()
+        }
+
+        binding.ibCallCancel.setOnClickListener {
             finish()
         }
 

@@ -60,8 +60,15 @@ object AlarmManager {
         Log.d(TAG, "startAlarm: Alarm Enabled: ${item.enabled}")
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val currentMinute = Calendar.getInstance().get(Calendar.MINUTE)
+
         if(!isAlarmEnabled(item, currentHour)) {
             Log.d(TAG, "startAlarm: Alarm is disabled at $currentHour.")
+            return
+        }
+
+        if(currentMinute !in 30 until 55) {
+            Log.d(TAG, "startAlarm: Alarm must be enabled in 30 ~ 55.")
             return
         }
 

@@ -47,6 +47,7 @@ class PermissionActivity : AppCompatActivity() {
             Glide.with(this).load(R.raw.example_grant_notification_read).into(binding.ivGrantNotificationExample)
 
             //버튼 동작 변경
+            binding.btnGrantPermission.text = "권한 허용하기 (1/2)"
             binding.btnGrantPermission.setOnClickListener {
                 requestNotificationReadPermission()
             }
@@ -59,6 +60,7 @@ class PermissionActivity : AppCompatActivity() {
             Glide.with(this).load(R.raw.example_grant_settings_write).into(binding.ivGrantNotificationExample)
 
             //버튼 동작 변경
+            binding.btnGrantPermission.text = "권한 허용하기 (2/2)"
             binding.btnGrantPermission.setOnClickListener {
                 requestWriteSettingsPermission()
             }

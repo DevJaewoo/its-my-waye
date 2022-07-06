@@ -29,6 +29,7 @@ class AlarmService : Service() {
     override fun onCreate() {
         super.onCreate()
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        alarm = Alarm()
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -54,6 +55,10 @@ class AlarmService : Service() {
                 Log.d(TAG, alarm.toString())
 
                 if(alarm.volume > 0) {
+                    if(mediaPlayer?.isPlaying == true) {
+                        mediaPlayer!!.stop()
+                    }
+
                     mediaPlayer = MediaPlayer.create(this, Uri.parse(alarm.filePath)).apply {
                         stop()
                         isLooping = true

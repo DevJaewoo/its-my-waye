@@ -1,5 +1,6 @@
 package com.devjaewoo.itsmywaye
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,8 +24,17 @@ class SettingsFragment : Fragment() {
         binding.btnAlarmTest.setOnClickListener {
             Thread {
                 Thread.sleep(3000)
-                AlarmManager.startAlarm("웨이")
+                AlarmManager.startAlarm("웨이", true)
             }.run()
+        }
+
+        binding.btnAlarmForceStop.setOnClickListener {
+            val intent = Intent(ApplicationManager.applicationContext, AlarmService::class.java).apply {
+                action = ACTION_ALARM_OFF
+                putExtra(EXTRA_NOTIFICATION_ID, NOTIFICATION_DEFAULT_ID)
+            }
+
+            ApplicationManager.applicationContext.startService(intent)
         }
 
         return binding.root

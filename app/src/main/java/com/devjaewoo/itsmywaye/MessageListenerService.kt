@@ -35,7 +35,7 @@ class MessageListenerService : NotificationListenerService() {
                     "SummaryText: $extraSummaryText\n"
         )
 
-        AlarmManager.startAlarm(extraText + extraBigText)
+        AlarmManager.startAlarm(extraText + extraBigText, false)
     }
 
     private fun isPackageNameInWhiteList(packageName: String?): Boolean =

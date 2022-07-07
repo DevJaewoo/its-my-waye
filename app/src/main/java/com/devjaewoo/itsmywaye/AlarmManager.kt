@@ -50,7 +50,7 @@ object AlarmManager {
         return currentTime !in alarmOffTimeStart until alarmOffTimeEnd
     }
 
-    fun startAlarm(message: String) {
+    fun startAlarm(message: String, forceStart: Boolean) {
 
         val itemIndex = getItemIndex(message)
         Log.d(TAG, "startAlarm: Item index of $message is $itemIndex")
@@ -67,7 +67,7 @@ object AlarmManager {
             return
         }
 
-        if(currentMinute !in 30 until 55) {
+        if(currentMinute !in 30 until 55 && !forceStart) {
             Log.d(TAG, "startAlarm: Alarm must be enabled in 30 ~ 55.")
             return
         }
